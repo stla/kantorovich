@@ -13,7 +13,6 @@
 the names of \code{x}
 }
 \description{
-attention car l'accès x["a"] ne marche pas
-je ne m'en sers que dans arrange_names(), ce serait pas plus simple de convertir en character ?
+Names for bigq
 }
 
