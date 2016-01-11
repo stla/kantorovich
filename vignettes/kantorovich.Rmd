@@ -1,0 +1,76 @@
+---
+title: "The `kantorovich` package"
+author: "Stéphane Laurent"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{The `kantorovich` package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The `kantorovich` package has two main features:
+
+* It computes the extreme joinings of two probability measures $\mu$ and $\nu$ on a finite set;
+* It computes the Kantorovich distance between these two measures, for a given distance on their finite state space.
+
+As long as the `gmp` package is installed, the `kantorovich` package can return the *exact* values of the extreme joinings and of the Kantorovich distance. 
+
+As an example, take $\mu$ and $\nu$ the uniform probability measures on a finite set having three elements.
+
+```{r}
+mu <- nu <- c(1/3, 1/3, 1/3)
+```
+
+The `ejoinings` function returns the extreme joinings of $\mu$ and $\nu$. In this case these are the $6!$ permutation matrices:
+
+```{r}
+library(kantorovich)
+ejoinings(mu, nu)
+```
+
+Since `mu` and `nu` were unnamed, the vector names `c(1,2,3)` has been automatically assigned to them. 
+The Kantorovich distance between $\mu$ and $\nu$ is relative to a given distance on the state space of $\mu$ and $\nu$, represented by their vector names. By default, the `kantorovich` package takes the discrete $0\mathrm{-}1$ distance. Obviously the Kantorovich distance is $0$ on this example, because $\mu=\nu$. 
+
+```{r}
+kantorovich(mu, nu)
+```
+
+Note the message returned by both the `ejoinings` and the `kantorovich` function. In order to get exact results, use rational numbers with the `gmp` package:
+
+```{r, message=FALSE, warning=FALSE}
+library(gmp)
+mu <- nu <- as.bigq(c(1,1,1), c(3,3,3)) # shorter: as.bigq(c(1,1,1), 3) 
+ejoinings(mu, nu)
+```
+
+Let us try a less trivial example with a user-specified distance. 
+
+```{r}
+mu <- as.bigq(c(1,2,4), 7)
+nu <- as.bigq(c(3,1,5), 9)
+names(mu) <- names(nu) <- c("a", "b", "c")
+ejoinings(mu, nu)
+```
+
+Now, define a distance $\rho$ on the state space $\{a, b, c\}$ of $\mu$ and $\nu$. A convenient way consists in firstly defining this distance as a matrix with row and column names, and then defining the distance function on $\{a, b, c\}$ as the one returning the entry of the matrix given by the corresponding names. The `bigq` matrices offered by the `gmp` package do not handle dimension names. But, in our example, the distance $\rho$ takes only integer values, therefore it is not necessary that $\rho$ returns a `bigq` number
+
+```{r}
+Rho <- matrix(
+  c(
+    c(0, 1, 2),
+    c(1, 0, 4),
+    c(2, 4, 0)
+  ), 
+  byrow = TRUE, nrow = 3,
+  dimnames = list(c("a","b","c"), c("a","b","c")))
+rho <- function(x,y){
+  return(Rho[x,y])
+}
+```
+
+
+```{r}
+kantorovich(mu, nu, dist=rho)
+```
+
