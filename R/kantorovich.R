@@ -6,9 +6,6 @@ asab <- function(x) as.character(gmp::as.bigq(x))
 
 #' Names for bigq
 #'
-#' attention car l'accès x["a"] ne marche pas
-#' je ne m'en sers que dans arrange_names(), ce serait pas plus simple de convertir en character ?
-#'
 #' @param x a \code{bigq} vector
 #' @return the names of \code{x}
 #'
@@ -71,9 +68,6 @@ arrange_names <- function(mu, nu){
   if(setequal(names(mu), names(nu))){
     if(has_changed(mu,nu)) message("Caution: some names of mu and/or nu were missing or not compatible - automatic change")
     return(list(mu=mu, nu=nu))
-#   } else if(setequal(names(mu), names(nu))){
-#     nu <- nu[names(mu)] # pas besoin si tu prend la distance sur les noms
-#     return(list(mu=mu, nu=nu))
   } else if(length(mu) == length(nu)){
     stop("Cannot deal with the names of mu and nu")
   } else if(length(mu) < length(nu)){
@@ -112,8 +106,6 @@ arrange_names <- function(mu, nu){
 #'
 #' @export
 discrete <- function(x, y, gmp=FALSE){
-  #gmp <- gmp && requireNamespace("gmp")
-  #x <- names(x); y <- names(y)
   if(gmp && !requireNamespace("gmp", quietly = TRUE)) stop("gmp package is not installed")
   out <- if(gmp) gmp::as.bigq(x != y) else as.integer(x != y)
   return(out)
@@ -168,7 +160,6 @@ ejoinings <- function(mu, nu){
            colnames(M) <- names(nu)
            return(M)
          })
-  #  t(q2d(scdd(mH0)$output[,-c(1,2)]))
 }
 
 #' Extremal distances
@@ -188,7 +179,6 @@ edistances <- function(mu, nu, dist=NULL, ...){
   n.tests <- length(tests)
   gmp <- requireNamespace("gmp", quietly = TRUE)
   use_gmp <- gmp && class(mu)=="bigq"
-  #if(use_gmp) Rho <- gmp::as.bigq(Rho)
   if(is.null(dist)){
     rho <- function(x, y) discrete(x, y, gmp=use_gmp)
   } else{
@@ -234,6 +224,6 @@ edistances <- function(mu, nu, dist=NULL, ...){
 kantorovich <- function(mu, nu, dist=NULL, ...){
   distances <- edistances(mu, nu, dist, ...)
   best <- which(distances$distances==min(distances$distances))
-  # retourner aussi les joinings
+  # to do: return the joinings
   return(distances$distances[[best[1]]])
 }
