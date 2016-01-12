@@ -1,7 +1,7 @@
 #' Convert numeric to rational
 #'
 #' @param x a numeric vector
-#'
+#' @importFrom gmp as.bigq
 asab <- function(x) as.character(gmp::as.bigq(x))
 
 #' Names for bigq
@@ -11,11 +11,7 @@ asab <- function(x) as.character(gmp::as.bigq(x))
 #'
 #' @export
 names.bigq <- function(x){
-  if(!requireNamespace("gmp", quietly = TRUE)){
-    stop("gmp needed for this function to work.", call. = FALSE)
-  } else {
     attr(x, "names")[1:length(x)]
-  }
 }
 
 #' Vectorize a function returning a bigq number
@@ -24,29 +20,27 @@ names.bigq <- function(x){
 #' @return the vectorized version of \code{f}
 #'
 #' @examples
-#' if(require(gmp)){
 #'  f <- function(x,y){
 #'    if(x==y) return(as.bigq(0)) else return(x+y)
 #'  }
+#'  library(gmp)
 #'  x <- as.bigq(c(0,0)); y <- as.bigq(c(0,1))
 #'  f(x,y)
 #'  g <- Vectorize_bigq(f)
 #'  g(x,y)
-#' }
+#' @importFrom gmp as.bigq apply
 #' @export
 Vectorize_bigq <- function(f){
-  if(!requireNamespace("gmp", quietly = TRUE)){
-    stop("gmp needed for this function to work.", call. = FALSE)
-  } else {
+  if(length(formalArgs(f)) != 2) stop("Intended only for two variables function")
     return(function(x,y) gmp::as.bigq(gmp::apply(cbind(x,y), 1,
                   FUN=function(row) as.character(f(row[1], row[2])))))
-  }
 }
 
 #' Arrange names
 #'
 #' @param mu,nu the vectors to be arranged
 #'
+#' @importFrom gmp as.bigq
 #' @export
 arrange_names <- function(mu, nu){
   # check sum ==1
@@ -100,13 +94,12 @@ arrange_names <- function(mu, nu){
 #'
 #' @examples
 #' discrete(2, 3)
-#' if(require(gmp)){
-#'  discrete(as.bigq(2), as.bigq(3), gmp=TRUE)
-#' }
+#' library(gmp)
+#' discrete(as.bigq(2), as.bigq(3), gmp=TRUE)
 #'
+#' @importFrom gmp as.bigq
 #' @export
 discrete <- function(x, y, gmp=FALSE){
-  if(gmp && !requireNamespace("gmp", quietly = TRUE)) stop("gmp package is not installed")
   out <- if(gmp) gmp::as.bigq(x != y) else as.integer(x != y)
   return(out)
 }
@@ -122,20 +115,17 @@ discrete <- function(x, y, gmp=FALSE){
 #'@examples
 #' mu <- nu <- c(0.5, 0.5)
 #' ejoinings(mu, nu)
-#' if(require(gmp)){
-#'  # use exact arithmetic
-#'  library(gmp)
-#'  mu <- nu <- as.bigq(c(0.5,0.5))
-#'  ejoinings(mu, nu)
-#' }
+#' # use exact arithmetic
+#' library(gmp)
+#' mu <- nu <- as.bigq(c(0.5,0.5))
+#' ejoinings(mu, nu)
 #'
 #' @export
 ejoinings <- function(mu, nu){
   munu <- arrange_names(mu, nu)
   mu <- munu$mu; nu <- munu$nu
-  gmp <- requireNamespace("gmp", quietly = TRUE)
   if(class(mu) != class(nu)) stop("Enter mu and nu in numeric or (preferably) in rational with the gmp package.")
-  if(gmp && class(mu) != "bigq") message("Message: You should enter mu and nu in rational with the gmp package.")
+  if(class(mu) != "bigq") message("Message: You should enter mu and nu in rational with the gmp package.")
   if(length(mu)>1){
     if(length(nu)>1){
       B <- c(mu,nu)
@@ -173,12 +163,12 @@ ejoinings <- function(mu, nu){
 #'
 #' @return a list with two components: the extreme joinings in a list and the distances in a vector
 #'
+#' @importFrom gmp as.bigq
 #' @export
 edistances <- function(mu, nu, dist=NULL, ...){
   tests <- ejoinings(mu, nu)
   n.tests <- length(tests)
-  gmp <- requireNamespace("gmp", quietly = TRUE)
-  use_gmp <- gmp && class(mu)=="bigq"
+  use_gmp <- class(mu)=="bigq"
   if(is.null(dist)){
     rho <- function(x, y) discrete(x, y, gmp=use_gmp)
   } else{
@@ -214,12 +204,11 @@ edistances <- function(mu, nu, dist=NULL, ...){
 #' mu <- c(1/7, 2/7, 4/7)
 #' nu <- c(1/4, 1/4, 1/2)
 #' kantorovich(mu, nu)
-#' if(require(gmp)){
-#'  library(gmp)
-#'  mu <- as.bigq(c(1,2,4), 7)
-#'  nu <- as.bigq(c(1,1,1), c(4,4,2))
-#'  kantorovich(mu, nu)
-#' }
+#' library(gmp)
+#' mu <- as.bigq(c(1,2,4), 7)
+#' nu <- as.bigq(c(1,1,1), c(4,4,2))
+#' kantorovich(mu, nu)
+#'
 #' @export
 kantorovich <- function(mu, nu, dist=NULL, ...){
   distances <- edistances(mu, nu, dist, ...)

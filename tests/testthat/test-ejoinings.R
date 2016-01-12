@@ -30,7 +30,6 @@ test_that("ejoinings in numeric mode returns a list of numeric matrices", {
 })
 
 test_that("ejoinings in bigq mode returns a list of character matrices", {
-  if(require(gmp)){
     mu <- nu <- as.bigq(c(0.5,0.5))
     x <- ejoinings(mu, nu)
     expect_equal(x[[1]], structure(c("0", "1/2", "1/2", "0"), .Dim = c(2L, 2L), .Dimnames = list(
@@ -51,7 +50,6 @@ test_that("ejoinings in bigq mode returns a list of character matrices", {
       c("a", "b"), c("b", "a"))))
     expect_equal(x[[2]], structure(c("1/2", "0", "0", "1/2"), .Dim = c(2L, 2L), .Dimnames = list(
       c("a", "b"), c("b", "a"))))
-  }
 })
 
 test_that("Main example", {

@@ -19,7 +19,6 @@ test_that("Main example - numeric mode", {
 })
 
 test_that("Main example - bigq mode", {
-  if(require(gmp)){
     # unnamed mu and nu
     mu <- as.bigq(c(1,2,4), 7)
     nu <- as.bigq(c(1,1,1), c(4,4,2))
@@ -35,7 +34,6 @@ test_that("Main example - bigq mode", {
     nu <- setNames(as.bigq(c(1,1,1), c(2,4,4)), c("c","a","b"))
     x <- kantorovich(mu, nu)
     expect_true(x==as.bigq(3,28))
-  }
 })
 
 test_that("Non-square example - numeric mode", {
@@ -56,7 +54,6 @@ test_that("Non-square example - numeric mode", {
 })
 
 test_that("Non-square example - bigq mode", {
-  if(require(gmp)){
     # unnamed mu and nu
     mu <- as.bigq(c(2/5,3/5))
     nu <- as.bigq(c(1/4,1/4,1/4,1/4))
@@ -71,5 +68,4 @@ test_that("Non-square example - bigq mode", {
     mu <- setNames(mu, c("b","a"))
     x <- kantorovich(mu, nu)
     expect_identical(x, as.bigq(0.5))
-  }
 })

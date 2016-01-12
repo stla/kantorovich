@@ -16,14 +16,13 @@ the vectorized version of \code{f}
 Vectorize a function returning a bigq number
 }
 \examples{
-if(require(gmp)){
  f <- function(x,y){
    if(x==y) return(as.bigq(0)) else return(x+y)
  }
+ library(gmp)
  x <- as.bigq(c(0,0)); y <- as.bigq(c(0,1))
  f(x,y)
  g <- Vectorize_bigq(f)
  g(x,y)
-}
 }
 

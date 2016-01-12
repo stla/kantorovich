@@ -10,7 +10,6 @@ test_that("Main example", {
                                           c("1", "2", "3"), c("1", "2", "3"))))
   expect_equal(x$distances[[1]], 0.642857142857143)
   #
-  if(requireNamespace("gmp", quietly = TRUE)){
     mu <- as.bigq(c(1,2,4),7)
     nu <- as.bigq(c(1,1,1),c(4,4,2))
     x <- edistances(mu, nu)
@@ -19,5 +18,4 @@ test_that("Main example", {
                                           "3/14"), .Dim = c(3L, 3L), .Dimnames = list(c("1", "2", "3"),
                                                                                       c("1", "2", "3"))))
     expect_equal(x$distances[[1]], as.bigq(9,14))
-  }
 })

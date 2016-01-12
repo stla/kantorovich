@@ -20,12 +20,10 @@ Return extreme joinings between \code{mu} and \code{nu}
 \examples{
 mu <- nu <- c(0.5, 0.5)
 ejoinings(mu, nu)
-if(require(gmp)){
- # use exact arithmetic
- library(gmp)
- mu <- nu <- as.bigq(c(0.5,0.5))
- ejoinings(mu, nu)
-}
+# use exact arithmetic
+library(gmp)
+mu <- nu <- as.bigq(c(0.5,0.5))
+ejoinings(mu, nu)
 
 }
 

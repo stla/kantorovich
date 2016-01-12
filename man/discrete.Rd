@@ -16,9 +16,8 @@ Returns the 0-1 distance between  \code{x} and \code{y}
 }
 \examples{
 discrete(2, 3)
-if(require(gmp)){
- discrete(as.bigq(2), as.bigq(3), gmp=TRUE)
-}
+library(gmp)
+discrete(as.bigq(2), as.bigq(3), gmp=TRUE)
 
 }
 
