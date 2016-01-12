@@ -17,6 +17,7 @@ Imports:
     gmp
 Depends:
     R (>= 2.5.3)
+SystemRequirements: GMP (https://gmplib.org/)
 RoxygenNote: 5.0.1
 Encoding: UTF-8
 VignetteBuilder: knitr
