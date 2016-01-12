@@ -228,7 +228,7 @@ edistances <- function(mu, nu, dist=NULL, ...){
 #'
 #' @export
 kantorovich <- function(mu, nu, dist=NULL, ...){
-  distances <- edistances(mu, nu, dist, ...)
+  distances <- edistances(mu=mu, nu=nu, dist=dist, ...)
   best <- which(distances$distances==min(distances$distances))
   # to do: return the joinings
   return(distances$distances[[best[1]]])

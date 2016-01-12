@@ -14,7 +14,9 @@ The `kantorovich` package has two main features:
 * It computes the extreme joinings of two probability measures $\mu$ and $\nu$ on a finite set;
 * It computes the Kantorovich distance between these two measures, for a given distance on their finite state space.
 
-As long as the `gmp` package is installed, the `kantorovich` package can return the *exact* values of the extreme joinings and of the Kantorovich distance. 
+With the help of the `rccd` and `gmp` packages, the `kantorovich` package can return the *exact* values of the extreme joinings and of the Kantorovich distance. 
+
+## Quick example 
 
 As an example, take $\mu$ and $\nu$ the uniform probability measures on a finite set having three elements.
 
@@ -36,7 +38,7 @@ The Kantorovich distance between $\mu$ and $\nu$ is relative to a given distance
 kantorovich(mu, nu)
 ```
 
-Note the message returned by both the `ejoinings` and the `kantorovich` function. In order to get exact results, use rational numbers with the `gmp` package:
+Note the message returned by both the `ejoinings` and the `kantorovich` functions. In order to get exact results, use rational numbers with the `gmp` package:
 
 ```{r, message=FALSE, warning=FALSE}
 library(gmp)
@@ -44,19 +46,30 @@ mu <- nu <- as.bigq(c(1,1,1), c(3,3,3)) # shorter: as.bigq(c(1,1,1), 3)
 ejoinings(mu, nu)
 ```
 
-Let us try a less trivial example with a user-specified distance. 
+## User-specified distance 
+
+Let us try an example with a user-specified distance. 
+Let's say that the state space of $\mu$ and $\nu$ is $\{a, b, c\}$, 
+and then we use `c("a","b","c")` as the vector names.
 
 ```{r}
 mu <- as.bigq(c(1,2,4), 7)
 nu <- as.bigq(c(3,1,5), 9)
 names(mu) <- names(nu) <- c("a", "b", "c")
-ejoinings(mu, nu)
 ```
 
-Now, define a distance $\rho$ on the state space $\{a, b, c\}$ of $\mu$ and $\nu$. A convenient way consists in firstly defining this distance as a matrix with row and column names, and then defining the distance function on $\{a, b, c\}$ as the one returning the entry of the matrix given by the corresponding names. The `bigq` matrices offered by the `gmp` package do not handle dimension names. But, in our example, the distance $\rho$ takes only integer values, therefore it is not necessary that $\rho$ returns a `bigq` number
+
+### Define distance as a matrix 
+
+The distance can be specified as a matrix. 
+
+Assume the distance $\rho$ is given by $\rho(a,b)=1$, $\rho(a,c)=2$ and $\rho(b,c)=4$. 
+The `bigq` matrices offered by the `gmp` package do not handle dimension names. 
+But, in our example, the distance $\rho$ takes only integer values, 
+ therefore one can use a numerical matrix:
 
 ```{r}
-Rho <- matrix(
+M <- matrix(
   c(
     c(0, 1, 2),
     c(1, 0, 4),
@@ -64,13 +77,79 @@ Rho <- matrix(
   ), 
   byrow = TRUE, nrow = 3,
   dimnames = list(c("a","b","c"), c("a","b","c")))
+kantorovich(mu, nu, dist=M)
+```
+
+If the distance takes rational values, one can proceed as before with a character matrix:
+
+```{r}
+M <- matrix(
+  c(
+    c("0", "3/13", "2/13"),
+    c("1/13", "0", "4/13"),
+    c("2/13", "4/13", "0")
+  ), 
+  byrow = TRUE, nrow = 3,
+  dimnames = list(c("a","b","c"), c("a","b","c")))
+kantorovich(mu, nu, dist=M)
+```
+
+### Define distance as a function 
+
+One can enter the distance as a function. In such an example, this does not sound convenient:
+
+```{r}
 rho <- function(x,y){
-  return(Rho[x,y])
+  if(x==y) {
+    return(0)
+  } else {
+    if(x=="a" && y=="b") return(1)
+    if(x=="a" && y=="c") return(2)
+    if(x=="b" && y=="c") return(4)
+    return(rho(y,x))
+  } 
 }
+kantorovich(mu, nu, dist=rho)
+```
+
+Using a function could be more convenient in the case when the names are numbers:
+
+```{r}
+names(mu) <- names(nu) <- 1:3
+```
+
+But one has to be aware that there are in character mode:
+
+```{r}
+names(mu)
+```
+
+Thus, one can define a distance function as follows, for example with  $\rho(x,y)=\frac{x-y}{x+y}$:
+
+```{r}
+rho <- function(x,y){
+  x <- as.numeric(x); y <- as.numeric(y)
+  return(as.bigq(x-y, x+y))
+}
+kantorovich(mu, nu, dist=rho)
 ```
 
 
+## A non-square example 
+
+The `kantorovich` package also handles the case when `mu` and `nu` have different lengths, such as this example:
+
 ```{r}
-kantorovich(mu, nu, dist=rho)
+mu <- as.bigq(c(1,2,4), 7)
+nu <- as.bigq(c(3,1), 4)
+names(mu) <- c("a", "b", "c") 
+names(nu) <- c("b", "c")
+```
+
+Then it automatically assigns $0$ weights to the points that do not appear in the names of the shorter probability: 
+
+```{r}
+ejoinings(mu, nu)
+kantorovich(mu, nu)
 ```
 
