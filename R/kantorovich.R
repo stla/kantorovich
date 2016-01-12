@@ -158,7 +158,7 @@ ejoinings <- function(mu, nu){
 #'
 #' @param mu row margins
 #' @param nu column margins
-#' @param dist function, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.
+#' @param dist function or matrix, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.
 #' @param ... arguments passed to \code{dist}
 #'
 #' @return a list with two components: the extreme joinings in a list and the distances in a vector
@@ -166,26 +166,43 @@ ejoinings <- function(mu, nu){
 #' @importFrom gmp as.bigq
 #' @export
 edistances <- function(mu, nu, dist=NULL, ...){
-  tests <- ejoinings(mu, nu)
-  n.tests <- length(tests)
+  joinings <- ejoinings(mu, nu)
+  n.joinings <- length(joinings)
+  j1 <- joinings[[1]]
   use_gmp <- class(mu)=="bigq"
   if(is.null(dist)){
     rho <- function(x, y) discrete(x, y, gmp=use_gmp)
-  } else{
+  } else if(class(dist) == "function") {
     rho <- function(x, y) dist(x, y, ...)
+  } else if(class(dist)=="matrix"){
+    if(!use_gmp && mode(dist) != "numeric") stop("The dist matrix must be numeric if mu and nu are numeric")
+    if(nrow(dist) != length(mu) || ncol(dist) != length(nu)) stop("Invalid dimension of the dist matrix")
+    if(is.null(rownames(dist))) rownames(dist) <- 1:nrow(dist)
+    if(is.null(colnames(dist))) colnames(dist) <- 1:ncol(dist)
+    if(!setequal(rownames(j1), rownames(dist)) || !setequal(colnames(j1), colnames(dist))) stop("Invalid dimension names of the dist matrix")
+  } else {
+    if(!use_gmp) stop("dist must be a function or a numeric matrix")
+    if(use_gmp) stop("dist must be a function or a numeric/character matrix")
   }
-  distances <- if(use_gmp) gmp::as.bigq(numeric(n.tests)) else numeric(n.tests)
-  for(k in 1:n.tests){
-    test <- tests[[k]]
+  if(class(dist) == "matrix") {
+    Rho <- dist[rownames(j1), colnames(j1)]
+  } else {
     if(use_gmp){
-      Rho <- outer(rownames(test), colnames(test), FUN=Vectorize_bigq(rho))
-      distances[k] <- sum(Rho * test)
-    }else{
-      Rho <- outer(rownames(test), colnames(test), FUN=rho)
-      distances[k] <- sum(Rho * test)
+      Rho <- outer(rownames(j1), colnames(j1), FUN=Vectorize_bigq(rho))
+    } else {
+      Rho <- outer(rownames(j1), colnames(j1), FUN=rho)
     }
   }
-  out <- list(joinings=tests, distances=distances)
+  distances <- if(use_gmp) gmp::as.bigq(numeric(n.joinings)) else numeric(n.joinings)
+  for(k in 1:n.joinings){
+    joining <- joinings[[k]]
+    if(use_gmp){
+      distances[k] <- sum(Rho * as.bigq(joining))
+    } else {
+      distances[k] <- sum(Rho * joining)
+    }
+  }
+  out <- list(joinings=joinings, distances=distances)
   return(out)
 }
 
@@ -195,7 +212,7 @@ edistances <- function(mu, nu, dist=NULL, ...){
 #'
 #' @param mu row margins
 #' @param nu column margins
-#' @param dist function, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.
+#' @param dist function or matrix, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.
 #' @param ... arguments passed to \code{dist}
 #'
 #' @return the Kantorovich distance

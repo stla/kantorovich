@@ -11,7 +11,7 @@ edistances(mu, nu, dist = NULL, ...)
 
 \item{nu}{column margins}
 
-\item{dist}{function, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.}
+\item{dist}{function or matrix, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.}
 
 \item{...}{arguments passed to \code{dist}}
 }

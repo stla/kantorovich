@@ -16,6 +16,15 @@ test_that("Main example - numeric mode", {
   nu <- c(c=1/2, a=1/4, b=1/4)
   x <- kantorovich(mu, nu)
   expect_equal(x, 0.107142857142857)
+  # matrix distance - wrong names
+  mu <- setNames(c(1/7, 2/7, 4/7), c("a","b","c"))
+  nu <- setNames(c(1/4, 1/4, 1/2), c("a","b","c"))
+  M <- matrix(1, nrow=3, ncol=3) - diag(3)
+  expect_error(kantorovich(mu, nu, dist=M))
+  # good names
+  rownames(M) <- colnames(M) <- c("a","b","c")
+  x <- kantorovich(mu, nu, dist=M)
+  expect_equal(x, 0.107142857142857)
 })
 
 test_that("Main example - bigq mode", {
@@ -49,6 +58,13 @@ test_that("Non-square example - numeric mode", {
   expect_equal(x, 0.5)
   # named mu and nu - different names
   mu <- setNames(mu, c("b","a"))
+  x <- kantorovich(mu, nu)
+  expect_equal(x, 0.5)
+  # matrix distance
+  mu <- setNames(c(2/5,3/5), c("a","b"))
+  nu <- setNames(c(1/4,1/4,1/4,1/4), c("a","b","c","d"))
+  M <- matrix(1, nrow=4, ncol=4) - diag(4)
+  rownames(M) <- c("a","b","c","d"); colnames(M) <- names(nu)
   x <- kantorovich(mu, nu)
   expect_equal(x, 0.5)
 })
