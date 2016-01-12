@@ -30,7 +30,6 @@ test_that("test arrange in numeric class with same lengths", {
 
 
 test_that("test arrange in bigq class with same lengths", {
-  if(require("gmp")){
     mu <- setNames(as.bigq(c(1/2, 1/2)), c("a", "b"))
     nu <- setNames(as.bigq(c(1/4, 3/4)), c("a", "b"))
     expect_identical(arrange_names(mu, nu), list(mu=mu, nu=nu))
@@ -85,7 +84,6 @@ test_that("test arrange in bigq class with same lengths", {
     mu <- setNames(as.bigq(c(1/2, 1/2)), c("a", "b"))
     nu <- setNames(as.bigq(c(1/4, 3/4)), c("", "b"))
     expect_error(arrange_names(mu, nu))
-  }
 })
 
 
@@ -124,7 +122,6 @@ test_that("test arrange in numeric class with different lengths", {
 
 
 test_that("test arrange in bigq class with different lengths", {
-  if(require("gmp")){
     mu <- setNames(as.bigq(c(1/4, 3/4)), c("a", "b"))
     nu <- setNames(as.bigq(c(1/8, 1/8, 3/4)), c("a", "b", "c"))
     expect_identical(arrange_names(mu, nu),
@@ -159,5 +156,4 @@ test_that("test arrange in bigq class with different lengths", {
     nu <- setNames(as.bigq(c(1/4, 0, 1/4)), c("", "b", "c"))
     expect_error(arrange_names(mu, nu))
     expect_error(arrange_names(nu, mu))
-  }
 })

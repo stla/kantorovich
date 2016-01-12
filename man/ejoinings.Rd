@@ -4,12 +4,14 @@
 \alias{ejoinings}
 \title{Extreme joinings}
 \usage{
-ejoinings(mu, nu)
+ejoinings(mu, nu, zeros = FALSE)
 }
 \arguments{
 \item{mu}{row margins}
 
 \item{nu}{column margins}
+
+\item{zeros}{logical; in case when \code{mu} and \code{nu} have differente lengths, set \code{FALSE} to remove lines or columns full of zeros}
 }
 \value{
 a list with the extreme joinings (matrices)
@@ -23,6 +25,10 @@ ejoinings(mu, nu)
 # use exact arithmetic
 library(gmp)
 mu <- nu <- as.bigq(c(0.5,0.5))
+ejoinings(mu, nu)
+# different lengths example
+mu <- setNames(as.bigq(c(1,2,4), 7), c("a", "b", "c"))
+nu <- setNames(as.bigq(c(3,1), 4), c("b", "c"))
 ejoinings(mu, nu)
 
 }

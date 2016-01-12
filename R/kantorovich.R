@@ -14,6 +14,15 @@ names.bigq <- function(x){
     attr(x, "names")[1:length(x)]
 }
 
+# #' Extract vector/matrix elements by names
+# #'
+# #'
+# `[.bigq` <- function (x, i = NULL, j = NULL, drop = TRUE)
+# {
+#   if(is.character(i)){ i <- sapply(i, function(k) which(names(x)==k), USE.NAMES=FALSE) }
+#   .Call(gmp:::matrix_get_at_q, x, i, j)
+# }
+
 #' Vectorize a function returning a bigq number
 #'
 #' @param f a function of two variables returing a bigq scalar
@@ -110,6 +119,7 @@ discrete <- function(x, y, gmp=FALSE){
 #'
 #' @param mu row margins
 #' @param nu column margins
+#' @param zeros logical; in case when \code{mu} and \code{nu} have differente lengths, set \code{FALSE} to remove lines or columns full of zeros
 #'
 #' @return a list with the extreme joinings (matrices)
 #'@examples
@@ -119,9 +129,14 @@ discrete <- function(x, y, gmp=FALSE){
 #' library(gmp)
 #' mu <- nu <- as.bigq(c(0.5,0.5))
 #' ejoinings(mu, nu)
+#' # different lengths example
+#' mu <- setNames(as.bigq(c(1,2,4), 7), c("a", "b", "c"))
+#' nu <- setNames(as.bigq(c(3,1), 4), c("b", "c"))
+#' ejoinings(mu, nu)
 #'
 #' @export
-ejoinings <- function(mu, nu){
+ejoinings <- function(mu, nu, zeros=FALSE){
+  mu0 <- mu; nu0 <- nu
   munu <- arrange_names(mu, nu)
   mu <- munu$mu; nu <- munu$nu
   if(class(mu) != class(nu)) stop("Enter mu and nu in numeric or (preferably) in rational with the gmp package.")
@@ -144,12 +159,26 @@ ejoinings <- function(mu, nu){
   extremals <- rcdd::scdd(mH0)$output[,-c(1,2)]
   if(is.null(dim(extremals))) extremals <- matrix(extremals, nrow=1)
   extremals <- lapply(1:nrow(extremals), function(i) matrix(extremals[i,], ncol=n, byrow=TRUE) )
-  lapply(extremals,
+  out <- lapply(extremals,
          function(M){
            rownames(M) <- names(mu)
            colnames(M) <- names(nu)
-           return(M)
+           return(M[, sapply(names(mu), function(k) which(names(nu)==k), USE.NAMES=FALSE)])
          })
+  if(!zeros && length(mu0) != length(nu0)){
+    if(length(mu0) < length(nu0)){
+      out <- lapply(out, function(joining){
+        which.zeros <- sapply(seq_along(mu), function(i) all(joining[i,]==0) || all(joining[i,]=="0"))
+        return(joining[!which.zeros,])
+      })
+    } else {
+      out <- lapply(out, function(joining){
+        which.zeros <- sapply(seq_along(nu), function(i) all(joining[,i]==0) || all(joining[,i]=="0"))
+        return(joining[,!which.zeros])
+      })
+    }
+  }
+  return(out)
 }
 
 #' Extremal distances
@@ -166,7 +195,7 @@ ejoinings <- function(mu, nu){
 #' @importFrom gmp as.bigq
 #' @export
 edistances <- function(mu, nu, dist=NULL, ...){
-  joinings <- ejoinings(mu, nu)
+  joinings <- ejoinings(mu, nu, zeros=TRUE)
   n.joinings <- length(joinings)
   j1 <- joinings[[1]]
   use_gmp <- class(mu)=="bigq"
