@@ -2,7 +2,7 @@
 % Please edit documentation in R/kantorovich.R
 \name{names.bigq}
 \alias{names.bigq}
-\title{Names for bigq}
+\title{Names for bigq vectors}
 \usage{
 \method{names}{bigq}(x)
 }
@@ -13,6 +13,6 @@
 the names of \code{x}
 }
 \description{
-Names for bigq
+Names for bigq vectors
 }
 

@@ -1,10 +1,8 @@
-#' Convert numeric to rational
-#'
-#' @param x a numeric vector
 #' @importFrom gmp as.bigq
+#'
 asab <- function(x) as.character(gmp::as.bigq(x))
 
-#' Names for bigq
+#' Names for bigq vectors
 #'
 #' @param x a \code{bigq} vector
 #' @return the names of \code{x}
@@ -23,34 +21,18 @@ names.bigq <- function(x){
 #   .Call(gmp:::matrix_get_at_q, x, i, j)
 # }
 
-#' Vectorize a function returning a bigq number
-#'
-#' @param f a function of two variables returing a bigq scalar
-#' @return the vectorized version of \code{f}
-#'
-#' @examples
-#'  f <- function(x,y){
-#'    if(x==y) return(as.bigq(0)) else return(x+y)
-#'  }
-#'  library(gmp)
-#'  x <- as.bigq(c(0,0)); y <- as.bigq(c(0,1))
-#'  f(x,y)
-#'  g <- Vectorize_bigq(f)
-#'  g(x,y)
+
 #' @importFrom gmp as.bigq apply
-#' @export
+#'
 Vectorize_bigq <- function(f){
   if(length(formalArgs(f)) != 2) stop("Intended only for two variables function")
     return(function(x,y) gmp::as.bigq(gmp::apply(cbind(x,y), 1,
                   FUN=function(row) as.character(f(row[1], row[2])))))
 }
 
-#' Arrange names
-#'
-#' @param mu,nu the vectors to be arranged
-#'
+
 #' @importFrom gmp as.bigq
-#' @export
+#'
 arrange_names <- function(mu, nu){
   # check sum ==1
   if(sum(mu) != 1) stop("sum(mu) != 1")
@@ -94,20 +76,8 @@ arrange_names <- function(mu, nu){
   }
 }
 
-#' Discrete 0-1 distance
-#'
-#' Returns the 0-1 distance between  \code{x} and \code{y}
-#'
-#' @param x,y vectors
-#' @param gmp logical, use exact arithmetic with the help of the \code{gmp} package
-#'
-#' @examples
-#' discrete(2, 3)
-#' library(gmp)
-#' discrete(as.bigq(2), as.bigq(3), gmp=TRUE)
-#'
+
 #' @importFrom gmp as.bigq
-#' @export
 discrete <- function(x, y, gmp=FALSE){
   out <- if(gmp) gmp::as.bigq(x != y) else as.integer(x != y)
   return(out)
