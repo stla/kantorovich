@@ -32,6 +32,7 @@ Vectorize_bigq <- function(f){
 
 
 #' @importFrom gmp as.bigq
+#' @importFrom stats setNames
 #'
 arrange_names <- function(mu, nu){
   # check sum ==1
@@ -104,6 +105,7 @@ discrete <- function(x, y, gmp=FALSE){
 #' nu <- setNames(as.bigq(c(3,1), 4), c("b", "c"))
 #' ejoinings(mu, nu)
 #'
+#' @importFrom stats model.matrix
 #' @export
 ejoinings <- function(mu, nu, zeros=FALSE){
   mu0 <- mu; nu0 <- nu
