@@ -1,6 +1,6 @@
 Package: kantorovich
 Type: Package
-Title: Kantorovich distance between probability measures
+Title: Kantorovich Distance Between Probability Measures
 Version: 1.0.0
 Date: 2016-01-14
 Author: Stéphane Laurent
@@ -14,7 +14,8 @@ Suggests:
     rmarkdown
 Imports:
     rcdd,
-    gmp
+    gmp,
+    methods
 Depends:
     R (>= 2.5.3)
 SystemRequirements: GMP (https://gmplib.org/)

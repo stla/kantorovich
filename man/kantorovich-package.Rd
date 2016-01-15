@@ -2,10 +2,10 @@
 \alias{kantorovich-package}
 \docType{package}
 \title{
-Kantorovich distance between discrete probability measures
+Kantorovich Distance Between Probability Measures
 }
 \description{
-Computes the Kantorovich distance between two discrete probability measures.
+Computes the Kantorovich distance between two probability measures on a finite set.
 
 To learn more, start with the vignettes:
 \code{browseVignettes(package="kantorovich")}.

@@ -23,6 +23,7 @@ names.bigq <- function(x){
 
 
 #' @importFrom gmp as.bigq apply
+#' @importFrom methods formalArgs
 #'
 Vectorize_bigq <- function(f){
   if(length(formalArgs(f)) != 2) stop("Intended only for two variables function")
