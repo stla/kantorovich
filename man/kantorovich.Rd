@@ -4,7 +4,7 @@
 \alias{kantorovich}
 \title{Kantorovich distance}
 \usage{
-kantorovich(mu, nu, dist = NULL, ...)
+kantorovich(mu, nu, dist = NULL, details = FALSE, ...)
 }
 \arguments{
 \item{mu}{row margins}
@@ -13,7 +13,9 @@ kantorovich(mu, nu, dist = NULL, ...)
 
 \item{dist}{function or matrix, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.}
 
-\item{...}{arguments passed to \code{dist}}
+\item{details}{prints the joinings achieving the Kantorovich distance}
+
+\item{...}{arguments passed to \code{dist} (if it is a function)}
 }
 \value{
 the Kantorovich distance

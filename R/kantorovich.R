@@ -215,7 +215,8 @@ edistances <- function(mu, nu, dist=NULL, ...){
 #' @param mu row margins
 #' @param nu column margins
 #' @param dist function or matrix, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.
-#' @param ... arguments passed to \code{dist}
+#' @param details prints the joinings achieving the Kantorovich distance
+#' @param ... arguments passed to \code{dist} (if it is a function)
 #'
 #' @return the Kantorovich distance
 #'
@@ -229,9 +230,17 @@ edistances <- function(mu, nu, dist=NULL, ...){
 #' kantorovich(mu, nu)
 #'
 #' @export
-kantorovich <- function(mu, nu, dist=NULL, ...){
+kantorovich <- function(mu, nu, dist=NULL, details=FALSE, ...){
   distances <- edistances(mu=mu, nu=nu, dist=dist, ...)
   best <- which(distances$distances==min(distances$distances))
-  # to do: return the joinings
-  return(distances$distances[[best[1]]])
+  kanto <- distances$distances[[best[1]]]
+  if(details){
+    joinings <- distances$joinings
+    njoinings <- length(joinings)
+    bestjoinings <- joinings[best]
+    message1 <- sprintf("The Kantorovich distance is achieved for %s joining(s) among the %s extreme joining(s), given in the 'joinings' attribute of the output.", length(best), njoinings)
+    message(message1)
+    attr(kanto, "joinings") <- bestjoinings
+  }
+  return(kanto)
 }
