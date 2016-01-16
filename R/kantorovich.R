@@ -40,7 +40,7 @@ arrange_names <- function(mu, nu){
   if(sum(mu) != 1) stop("sum(mu) != 1")
   if(sum(nu) != 1) stop("sum(nu) != 1")
   # check class
-  if(!all(c(class(mu), class(nu)) %in% c("integer", "numeric", "bigq"))) stop("mu and nu must have numeric or bigq class")
+  if(!all(c(class(mu), class(nu)) %in% c("integer", "numeric", "bigq"))) stop("mu and nu must be vectors in numeric or bigq/character class")
   if(class(mu) != class(nu)) stop("mu and nu have not the same class")
   #
   if(is.null(names(mu)) && is.null(names(nu)) && length(mu)==length(nu)){
@@ -239,7 +239,7 @@ kantorovich <- function(mu, nu, dist=NULL, details=FALSE, ...){
     njoinings <- length(joinings)
     bestjoinings <- joinings[best]
     message1 <- sprintf("The Kantorovich distance is achieved for %s joining(s) among the %s extreme joining(s), given in the 'joinings' attribute of the output.", length(best), njoinings)
-    message(message1)
+    cat(message1)
     attr(kanto, "joinings") <- bestjoinings
   }
   return(kanto)
