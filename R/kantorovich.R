@@ -36,6 +36,8 @@ Vectorize_bigq <- function(f){
 #' @importFrom stats setNames
 #'
 arrange_names <- function(mu, nu){
+  if(is.character(mu)) mu <- setNames(as.bigq(mu), names(mu))
+  if(is.character(nu)) nu <- setNames(as.bigq(nu), names(nu))
   # check sum ==1
   if(sum(mu) != 1) stop("sum(mu) != 1")
   if(sum(nu) != 1) stop("sum(nu) != 1")
@@ -171,7 +173,7 @@ edistances <- function(mu, nu, dist=NULL, ...){
   joinings <- ejoinings(mu, nu, zeros=TRUE)
   n.joinings <- length(joinings)
   j1 <- joinings[[1]]
-  use_gmp <- class(mu)=="bigq"
+  use_gmp <- class(mu) %in% c("bigq", "character")
   if(is.null(dist)){
     rho <- function(x, y) discrete(x, y, gmp=use_gmp)
   } else if(class(dist) == "function") {
@@ -238,7 +240,7 @@ kantorovich <- function(mu, nu, dist=NULL, details=FALSE, ...){
     joinings <- distances$joinings
     njoinings <- length(joinings)
     bestjoinings <- joinings[best]
-    message1 <- sprintf("The Kantorovich distance is achieved for %s joining(s) among the %s extreme joining(s), given in the 'joinings' attribute of the output.", length(best), njoinings)
+    message1 <- sprintf("The Kantorovich distance is achieved for %s joining(s) among the %s extreme joining(s), given in the 'joinings' attribute of the output.\n", length(best), njoinings)
     cat(message1)
     attr(kanto, "joinings") <- bestjoinings
   }
