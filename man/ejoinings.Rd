@@ -7,17 +7,17 @@
 ejoinings(mu, nu, zeros = FALSE)
 }
 \arguments{
-\item{mu}{row margins}
+\item{mu}{(row margins) probability measure in numeric or bigq/character mode}
 
-\item{nu}{column margins}
+\item{nu}{(column margins) probability measure in numeric or bigq/character mode}
 
 \item{zeros}{logical; in case when \code{mu} and \code{nu} have differente lengths, set \code{FALSE} to remove lines or columns full of zeros}
 }
 \value{
-a list with the extreme joinings (matrices)
+A list containing the extreme joinings (matrices).
 }
 \description{
-Return extreme joinings between \code{mu} and \code{nu}
+Return extreme joinings between \code{mu} and \code{nu}.
 }
 \examples{
 mu <- nu <- c(0.5, 0.5)

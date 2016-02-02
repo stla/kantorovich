@@ -89,13 +89,13 @@ discrete <- function(x, y, gmp=FALSE){
 
 #' Extreme joinings
 #'
-#' Return extreme joinings between \code{mu} and \code{nu}
+#' Return extreme joinings between \code{mu} and \code{nu}.
 #'
-#' @param mu row margins
-#' @param nu column margins
+#' @param mu (row margins) probability measure in numeric or bigq/character mode
+#' @param nu (column margins) probability measure in numeric or bigq/character mode
 #' @param zeros logical; in case when \code{mu} and \code{nu} have differente lengths, set \code{FALSE} to remove lines or columns full of zeros
 #'
-#' @return a list with the extreme joinings (matrices)
+#' @return A list containing the extreme joinings (matrices).
 #'@examples
 #' mu <- nu <- c(0.5, 0.5)
 #' ejoinings(mu, nu)
@@ -158,14 +158,16 @@ ejoinings <- function(mu, nu, zeros=FALSE){
 
 #' Extremal distances
 #'
-#' Compute the distances at the extreme points
+#' Compute the distances at the extreme joinings.
 #'
-#' @param mu row margins
-#' @param nu column margins
+#' @param mu (row margins) probability measure in numeric or bigq/character mode
+#' @param nu (column margins) probability measure in numeric or bigq/character mode
 #' @param dist function or matrix, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.
 #' @param ... arguments passed to \code{dist}
 #'
-#' @return a list with two components: the extreme joinings in a list and the distances in a vector
+#' @return A list with two components: the extreme joinings in a list and the distances in a vector.
+#'
+#' @note This function, called by \code{\link{kantorovich}}, is rather for internal purpose.
 #'
 #' @importFrom gmp as.bigq
 #' @export
@@ -212,15 +214,15 @@ edistances <- function(mu, nu, dist=NULL, ...){
 
 #' Kantorovich distance
 #'
-#' Compute the Kantorovich distance
+#' Compute the Kantorovich distance between two probability measures on a finite set.
 #'
-#' @param mu row margins
-#' @param nu column margins
-#' @param dist function or matrix, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.
-#' @param details prints the joinings achieving the Kantorovich distance
-#' @param ... arguments passed to \code{dist} (if it is a function)
+#' @param mu (row margins) probability measure in numeric or bigq/character mode
+#' @param nu (column margins) probability measure in numeric or bigq/character mode
+#' @param dist function or matrix, the distance to be minimized on average; if \code{NULL}, the 0-1 distance is used.
+#' @param details prints the joinings achieving the Kantorovich distance and returns them in the \code{"joinings"} attribute of the output
+#' @param ... arguments passed to \code{dist} (only if it is a function)
 #'
-#' @return the Kantorovich distance
+#' @return The Kantorovich distance between \code{mu} and \code{nu}.
 #'
 #' @examples
 #' mu <- c(1/7, 2/7, 4/7)
@@ -230,6 +232,11 @@ edistances <- function(mu, nu, dist=NULL, ...){
 #' mu <- as.bigq(c(1,2,4), 7)
 #' nu <- as.bigq(c(1,1,1), c(4,4,2))
 #' kantorovich(mu, nu)
+#' mu <- c("1/7", "2/7", "4/7")
+#' nu <- c("1/4", "1/4", "1/2")
+#' kantorovich(mu, nu, details=TRUE)
+#'
+#' @details The function firstly computes all the extreme joinings of \code{mu} and \code{nu}, then evaluates the average distance for each of them, and then returns the minimal one.
 #'
 #' @export
 kantorovich <- function(mu, nu, dist=NULL, details=FALSE, ...){

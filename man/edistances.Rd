@@ -7,18 +7,21 @@
 edistances(mu, nu, dist = NULL, ...)
 }
 \arguments{
-\item{mu}{row margins}
+\item{mu}{(row margins) probability measure in numeric or bigq/character mode}
 
-\item{nu}{column margins}
+\item{nu}{(column margins) probability measure in numeric or bigq/character mode}
 
 \item{dist}{function or matrix, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.}
 
 \item{...}{arguments passed to \code{dist}}
 }
 \value{
-a list with two components: the extreme joinings in a list and the distances in a vector
+A list with two components: the extreme joinings in a list and the distances in a vector.
 }
 \description{
-Compute the distances at the extreme points
+Compute the distances at the extreme joinings.
+}
+\note{
+This function, called by \code{\link{kantorovich}}, is rather for internal purpose.
 }
 

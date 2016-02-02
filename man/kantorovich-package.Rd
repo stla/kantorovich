@@ -17,7 +17,7 @@ If you encounter a bug, or if you have a suggestion to improve the package, plea
 Package: \tab kantorovich\cr
 Type: \tab Package\cr
 Version: \tab 1.0.0.9000\cr
-Date: \tab 2016-01-16\cr
+Date: \tab 2016-02-02\cr
 License: \tab GPL-2\cr
 }
 }
