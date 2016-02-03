@@ -124,12 +124,12 @@ But one has to be aware that there are in character mode:
 names(mu)
 ```
 
-Thus, one can define a distance function as follows, for example with  $\rho(x,y)=\frac{x-y}{x+y}$:
+Thus, one can define a distance function as follows, for example with  $\rho(x,y)=\frac{|x-y|}{1+|x-y|}$:
 
 ```{r}
 rho <- function(x,y){
   x <- as.numeric(x); y <- as.numeric(y)
-  return(as.bigq(x-y, x+y))
+  return(as.bigq(abs(x-y), 1+abs(x-y)))
 }
 kantorovich(mu, nu, dist=rho)
 ```
@@ -146,5 +146,12 @@ names(mu) <- c("a", "b", "c")
 names(nu) <- c("b", "c")
 ejoinings(mu, nu)
 kantorovich(mu, nu)
+```
+
+Note the caution message.  The `kantorovich` package has to handle the fact that `mu` is given on the set $\{a,b,c\}$ while `nu` is given on the set $\{b,c\}$. It detects that the second set is included in the first one, and then treats `nu` on the bigger set $\{a,b,c\}$ by assigning $\nu(a)=0$. To avoid this caution message, the user has to enter this $0$ value:
+
+```{r}
+nu <- as.bigq(c(0,3,1), 4)
+names(nu) <- c("a", "b", "c") 
 ```
 

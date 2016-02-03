@@ -1,8 +1,8 @@
-# kantorovich 1.0.0.9000
+# kantorovich 1.1.0
 
-* Accept mu and nu as character vectors
+* Now the package accepts mu and nu as character vectors (then treated as bigq vectors).
 
-* kantorovich() with option details=TRUE returns details of the Kantorovich computation
+* kantorovich() with option details=TRUE returns details of the Kantorovich computation.
 
 # kantorovich 1.0.0
 
