@@ -21,6 +21,10 @@ New maintainer:
 Old maintainer(s):
   StÃ©phane Laurent <laurent_step@yahoo.fr>
 
+## CRAN Package Check Results for the previous version
+
+There is an error reported on https://cran.rstudio.com/web/checks/check_results_kantorovich.html for the r-patched-solaris-sparc flavor, related to one test. I do not know how to deal with it. 
+
 
 # Release version 1.0.0 (2016-01-15)
 
