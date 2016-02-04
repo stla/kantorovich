@@ -1,3 +1,7 @@
+# kantorovich 1.1.0.9000
+
+
+
 # kantorovich 1.1.0
 
 * Now the package accepts mu and nu as character vectors (then treated as bigq vectors).
