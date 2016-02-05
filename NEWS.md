@@ -1,5 +1,6 @@
 # kantorovich 1.1.0.9000
 
+* import gmp in NAMESPACE
 
 
 # kantorovich 1.1.0

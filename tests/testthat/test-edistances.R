@@ -38,7 +38,7 @@ test_that("Main example - numeric", {
 
 
 test_that("Main example - bigq", {
-  library(gmp)
+  #library(gmp)
   mu <- as.bigq(c(1,2,4),7)
   nu <- as.bigq(c(1,1,1),c(4,4,2))
   # default distance

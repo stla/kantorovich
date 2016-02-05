@@ -109,6 +109,7 @@ discrete <- function(x, y, gmp=FALSE){
 #' ejoinings(mu, nu)
 #'
 #' @importFrom stats model.matrix
+#' @importFrom rcdd makeH scdd
 #' @export
 ejoinings <- function(mu, nu, zeros=FALSE){
   mu0 <- mu; nu0 <- nu
@@ -169,7 +170,7 @@ ejoinings <- function(mu, nu, zeros=FALSE){
 #'
 #' @note This function, called by \code{\link{kantorovich}}, is rather for internal purpose.
 #'
-#' @importFrom gmp as.bigq
+#' @import gmp
 #' @export
 edistances <- function(mu, nu, dist=NULL, ...){
   joinings <- ejoinings(mu, nu, zeros=TRUE)

@@ -61,7 +61,7 @@ test_that("Main example", {
                                    0, 0.285714285714286, 0.214285714285714), .Dim = c(3L, 3L), .Dimnames = list(
                                      c("1", "2", "3"), c("1", "2", "3"))))
   #
-  if(require(gmp)){
+  #if(require(gmp)){
     mu <- as.bigq(c(1,2,4),7)
     nu <- as.bigq(c(1,1,1),c(4,4,2))
     x <- ejoinings(mu, nu)
@@ -69,7 +69,7 @@ test_that("Main example", {
     expect_equal(x[[1]], structure(c("1/7", "0", "3/28", "0", "0", "1/4", "0", "2/7",
                                      "3/14"), .Dim = c(3L, 3L), .Dimnames = list(c("1", "2", "3"),
                                                                                  c("1", "2", "3"))))
-  }
+  #}
 })
 
 test_that("Non-square example - with zeros", {
