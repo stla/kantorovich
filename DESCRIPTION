@@ -16,7 +16,8 @@ Imports:
     rcdd,
     gmp,
     methods,
-    lpSolve
+    lpSolve,
+    Rglpk
 Depends:
     R (>= 2.5.3)
 SystemRequirements: GMP (https://gmplib.org/)

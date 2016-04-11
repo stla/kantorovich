@@ -18,7 +18,6 @@
 #' @export
 #'
 kantorovich_lp <- function(mu, nu, dist=NULL, solution=FALSE, lp.object=FALSE, ...){
-  # à faire : sortir les solutions
   m <- length(mu)
   n <- length(nu)
   # checks
@@ -32,7 +31,7 @@ kantorovich_lp <- function(mu, nu, dist=NULL, solution=FALSE, lp.object=FALSE, .
   }
   #
   if(is.null(dist)) dist <- 1-diag(m)
-  kanto <- lp(direction = "min", objective.in = c(t(dist)),
+  kanto <- lpSolve::lp(direction = "min", objective.in = c(t(dist)),
      const.mat = rbind(-diag(m*n), rbind(t(model.matrix(~0+gl(m,n)))[,], t(model.matrix(~0+factor(rep(1:n,m))))[,])),
      const.dir = c(rep("<=", m*n), rep("==", m+n)), const.rhs = c(rep(0,m*n), c(mu, nu)), ...)
   # status
