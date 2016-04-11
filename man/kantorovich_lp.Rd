@@ -2,7 +2,7 @@
 % Please edit documentation in R/kantorovich_lpsolve.R
 \name{kantorovich_lp}
 \alias{kantorovich_lp}
-\title{Computes Kantorovich distance with Lp_solve}
+\title{Computes Kantorovich distance with lp_solve}
 \usage{
 kantorovich_lp(mu, nu, dist = NULL, solution = FALSE, lp.object = FALSE,
   ...)

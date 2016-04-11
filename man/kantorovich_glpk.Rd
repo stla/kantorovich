@@ -4,7 +4,8 @@
 \alias{kantorovich_glpk}
 \title{Computes Kantorovich distance with GLPK}
 \usage{
-kantorovich_glpk(mu, nu, dist = NULL, solution = FALSE, ...)
+kantorovich_glpk(mu, nu, dist = NULL, solution = FALSE,
+  stop_if_fail = TRUE, ...)
 }
 \arguments{
 \item{mu}{(row margins) probability measure in numeric mode}
@@ -14,6 +15,8 @@ kantorovich_glpk(mu, nu, dist = NULL, solution = FALSE, ...)
 \item{dist}{matrix, the distance to be minimized on average; if \code{NULL}, the 0-1 distance is used.}
 
 \item{solution}{logical; if \code{TRUE} the solution is returned in the \code{"solution"} attributes of the output}
+
+\item{stop_if_fail}{logical; if \code{TRUE}, an error is returned in the case when no solution is found; if \code{FALSE}, the output of \code{\link[Rglpk]{Rglpk_solve_LP}} is returned with a warning}
 
 \item{...}{arguments passed to \code{\link[Rglpk]{Rglpk_solve_LP}}}
 }

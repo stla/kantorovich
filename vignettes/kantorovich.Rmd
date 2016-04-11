@@ -14,6 +14,9 @@ The `kantorovich` package has two main features:
 * It computes the extreme joinings of two probability measures $\mu$ and $\nu$ on a finite set;
 * It computes the Kantorovich distance between these two measures, for a given distance on their finite state space.
 
+
+# Exact results 
+
 With the help of the `rccd` and `gmp` packages, the `kantorovich` package can return the *exact* values of the extreme joinings and of the Kantorovich distance. 
 
 ## Quick example 
@@ -154,4 +157,40 @@ Note the caution message.  The `kantorovich` package has to handle the fact that
 nu <- as.bigq(c(0,3,1), 4)
 names(nu) <- c("a", "b", "c") 
 ```
+
+
+# Other solvers 
+
+The `kantorovich` package provides two other functions to compute the Kantorovich distance:
+
+- `kantorovich_lp`, which uses the [lp_solve](http://web.mit.edu/lpsolve/doc/) solver with the help of the `lpSolve` package;
+
+- `kantorovich_glpk`, which uses the [GLPK](http://www.gnu.org/software/glpk/) solver with the help of the `Rglpk` package. 
+
+Contrary to the `kantorovich` function, these two functions do not take care of the names of the two vectors `mu` and `nu` representing the two probability measures $\mu$ and $\nu$, and the distance to be minimized on average must be given as a matrix only, not a function. 
+
+A better precision is achieved by `kantorovich_glpk`. For instance, take the previous example for which we found $13/63$ as the exact Kantorovich distance:
+
+```{r, collapse=TRUE}
+mu <- c(1,2,4)/7
+nu <- c(3,1,5)/9
+M <- matrix(
+  c(
+    c(0, 1, 2),
+    c(1, 0, 4),
+    c(2, 4, 0)
+  ), 
+  byrow = TRUE, nrow = 3)
+kanto_lp <- kantorovich_lp(mu, nu, dist=M)
+kanto_glpk <- kantorovich_glpk(mu, nu, dist=M)
+```
+
+Then `kantorovich_lp` does not return the better decimal approximation of $13/63$:
+
+```{r, collapse=TRUE}
+print(kanto_lp, digits=22)
+print(kanto_glpk, digits=22)
+print(13/63, digits=22)
+```
+
 

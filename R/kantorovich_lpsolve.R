@@ -1,4 +1,4 @@
-#' Computes Kantorovich distance with Lp_solve
+#' Computes Kantorovich distance with lp_solve
 #'
 #' Kantorovich distance using the \code{lpSolve} package
 #'
@@ -36,12 +36,12 @@ kantorovich_lp <- function(mu, nu, dist=NULL, solution=FALSE, lp.object=FALSE, .
      const.dir = c(rep("<=", m*n), rep("==", m+n)), const.rhs = c(rep(0,m*n), c(mu, nu)), ...)
   # status
   if(lp.object==FALSE){
-    if(kanto$status == 0){
-      message("Success")
-    }else if(kanto$status ==2){
-      cat("Error: no feasible solution found")
-    }else{
-      cat("Error: status", kanto$status, "\n")
+    if(kanto$status != 0){
+      if(kanto$status == 2){
+        cat("Error: no feasible solution found")
+      }else{
+        cat("Error: status", kanto$status, "\n")
+      }
     }
   }
   # output
