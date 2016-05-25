@@ -1,7 +1,10 @@
-# kantorovich 1.1.0.9000
+# kantorovich 2.0.0
+
+* New functions kantorovich_glpk and kantorovich_lp
+
+# kantorovich 1.1.1
 
 * import gmp in NAMESPACE
-
 
 # kantorovich 1.1.0
 

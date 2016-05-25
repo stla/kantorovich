@@ -16,8 +16,8 @@ If you encounter a bug, or if you have a suggestion to improve the package, plea
 \tabular{ll}{
 Package: \tab kantorovich\cr
 Type: \tab Package\cr
-Version: \tab 1.1.0.9001\cr
-Date: \tab 2016-04-16\cr
+Version: \tab 2.0.0\cr
+Date: \tab 2016-05-25\cr
 License: \tab GPL-2\cr
 }
 }

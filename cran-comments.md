@@ -1,3 +1,19 @@
+# Release version 2.0.0 (2016-05-25)
+
+## Release summary
+
+Nothing particular. 
+
+## Test environments
+
+* ubuntu 14.04, R 3.2.5
+* online win-builder.r-project.org (using `devtools::build_win()`)
+
+## R CMD check results
+
+There was
+
+
 # Release version 1.1.0 (2016-02-04)
 
 ## Release summary
