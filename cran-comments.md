@@ -11,7 +11,8 @@ Nothing particular.
 
 ## R CMD check results
 
-There was
+Ok.
+
 
 
 # Release version 1.1.0 (2016-02-04)
