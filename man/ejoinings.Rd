@@ -11,7 +11,8 @@ ejoinings(mu, nu, zeros = FALSE)
 
 \item{nu}{(column margins) probability measure in numeric or bigq/character mode}
 
-\item{zeros}{logical; in case when \code{mu} and \code{nu} have differente lengths, set \code{FALSE} to remove lines or columns full of zeros}
+\item{zeros}{logical; in case when \code{mu} and \code{nu} have different lengths,
+set \code{FALSE} to remove lines or columns full of zeros}
 }
 \value{
 A list containing the extreme joinings (matrices).
@@ -32,4 +33,3 @@ nu <- setNames(as.bigq(c(3,1), 4), c("b", "c"))
 ejoinings(mu, nu)
 
 }
-

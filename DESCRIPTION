@@ -1,8 +1,8 @@
 Package: kantorovich
 Type: Package
 Title: Kantorovich Distance Between Probability Measures
-Version: 2.0.0
-Date: 2016-05-25
+Version: 2.0.0.9000
+Date: 2020-02-22
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@yahoo.fr>
 Description: Computes the Kantorovich distance between two probability measures on a finite set.
@@ -21,6 +21,8 @@ Imports:
 Depends:
     R (>= 2.5.3)
 SystemRequirements: GMP (https://gmplib.org/)
-RoxygenNote: 5.0.1
+RoxygenNote: 7.0.2
 Encoding: UTF-8
 VignetteBuilder: knitr
+URL: https://github.com/stla/kantorovich
+BugReports: https://github.com/stla/kantorovich/issues

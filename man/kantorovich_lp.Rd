@@ -4,19 +4,22 @@
 \alias{kantorovich_lp}
 \title{Computes Kantorovich distance with lp_solve}
 \usage{
-kantorovich_lp(mu, nu, dist = NULL, solution = FALSE, lp.object = FALSE,
-  ...)
+kantorovich_lp(mu, nu, dist = NULL, solution = FALSE, lp.object = FALSE, ...)
 }
 \arguments{
 \item{mu}{(row margins) probability measure in numeric mode}
 
 \item{nu}{(column margins) probability measure in numeric mode}
 
-\item{dist}{matrix, the distance to be minimized on average; if \code{NULL}, the 0-1 distance is used.}
+\item{dist}{matrix, the distance to be minimized on average;
+if \code{NULL}, the 0-1 distance is used.}
 
-\item{solution}{logical, to use only if \code{lp.object=FALSE}; if \code{TRUE} the solution is returned in the \code{"solution"} attributes of the output}
+\item{solution}{logical, to use only if \code{lp.object=FALSE};
+if \code{TRUE} the solution is returned in the \code{"solution"} attributes
+of the output}
 
-\item{lp.object}{logical, if \code{FALSE}, the output is the Kantorovich distance; if \code{TRUE}, the output is a \code{\link[lpSolve]{lp.object}}}
+\item{lp.object}{logical, if \code{FALSE}, the output is the Kantorovich
+distance; if \code{TRUE}, the output is a \code{\link[lpSolve]{lp.object}}}
 
 \item{...}{arguments passed to \code{\link[lpSolve]{lp}}}
 }
@@ -29,4 +32,3 @@ nu <- c(1/4,1/4,1/2)
 kantorovich_lp(mu, nu)
 
 }
-

@@ -11,9 +11,11 @@ kantorovich(mu, nu, dist = NULL, details = FALSE, ...)
 
 \item{nu}{(column margins) probability measure in numeric or bigq/character mode}
 
-\item{dist}{function or matrix, the distance to be minimized on average; if \code{NULL}, the 0-1 distance is used.}
+\item{dist}{function or matrix, the distance to be minimized on average;
+if \code{NULL}, the 0-1 distance is used.}
 
-\item{details}{prints the joinings achieving the Kantorovich distance and returns them in the \code{"joinings"} attribute of the output}
+\item{details}{prints the joinings achieving the Kantorovich distance and
+returns them in the \code{"joinings"} attribute of the output}
 
 \item{...}{arguments passed to \code{dist} (only if it is a function)}
 }
@@ -24,7 +26,9 @@ The Kantorovich distance between \code{mu} and \code{nu}.
 Compute the Kantorovich distance between two probability measures on a finite set.
 }
 \details{
-The function firstly computes all the extreme joinings of \code{mu} and \code{nu}, then evaluates the average distance for each of them, and then returns the minimal one.
+The function firstly computes all the extreme joinings of \code{mu}
+and \code{nu}, then evaluates the average distance for each of them, and
+then returns the minimal one.
 }
 \examples{
 mu <- c(1/7, 2/7, 4/7)
@@ -39,4 +43,3 @@ nu <- c("1/4", "1/4", "1/2")
 kantorovich(mu, nu, details=TRUE)
 
 }
-

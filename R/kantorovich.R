@@ -7,7 +7,7 @@ asab <- function(x) as.character(gmp::as.bigq(x))
 #'
 #' @export
 names.bigq <- function(x){
-    attr(x, "names")[1:length(x)]
+    attr(x, "names")[1L:length(x)]
 }
 
 # #' Extract vector/matrix elements by names
@@ -38,7 +38,8 @@ arrange_names <- function(mu, nu){
   if(sum(mu) != 1) stop("sum(mu) != 1")
   if(sum(nu) != 1) stop("sum(nu) != 1")
   # check class
-  if(!all(c(class(mu), class(nu)) %in% c("integer", "numeric", "bigq"))) stop("mu and nu must be vectors in numeric or bigq/character class")
+  if(!all(c(class(mu), class(nu)) %in% c("integer", "numeric", "bigq")))
+    stop("mu and nu must be vectors in numeric or bigq/character class")
   if(class(mu) != class(nu)) stop("mu and nu have not the same class")
   #
   if(is.null(names(mu)) && is.null(names(nu)) && length(mu)==length(nu)){
@@ -78,8 +79,7 @@ arrange_names <- function(mu, nu){
 
 
 discrete <- function(x, y, gmp=FALSE){
-  out <- if(gmp) gmp::as.bigq(x != y) else as.integer(x != y)
-  return(out)
+  if(gmp) gmp::as.bigq(x != y) else as.integer(x != y)
 }
 
 #' Extreme joinings
@@ -88,10 +88,11 @@ discrete <- function(x, y, gmp=FALSE){
 #'
 #' @param mu (row margins) probability measure in numeric or bigq/character mode
 #' @param nu (column margins) probability measure in numeric or bigq/character mode
-#' @param zeros logical; in case when \code{mu} and \code{nu} have differente lengths, set \code{FALSE} to remove lines or columns full of zeros
+#' @param zeros logical; in case when \code{mu} and \code{nu} have different lengths,
+#' set \code{FALSE} to remove lines or columns full of zeros
 #'
 #' @return A list containing the extreme joinings (matrices).
-#'@examples
+#' @examples
 #' mu <- nu <- c(0.5, 0.5)
 #' ejoinings(mu, nu)
 #' # use exact arithmetic
@@ -110,17 +111,19 @@ ejoinings <- function(mu, nu, zeros=FALSE){
   mu0 <- mu; nu0 <- nu
   munu <- arrange_names(mu, nu)
   mu <- munu$mu; nu <- munu$nu
-  if(class(mu) != class(nu)) stop("Enter mu and nu in numeric or (preferably) in rational with the gmp package.")
-  if(class(mu) != "bigq") message("Message: You should enter mu and nu in rational with the gmp package.")
-  if(length(mu)>1){
-    if(length(nu)>1){
+  if(class(mu) != class(nu))
+    stop("Enter mu and nu in numeric or (preferably) in rational with the gmp package.")
+  if(class(mu) != "bigq")
+    message("Message: You should enter mu and nu in rational with the gmp package.")
+  if(length(mu) > 1L){
+    if(length(nu) > 1L){
       B <- c(mu,nu)
     }else{ B <- mu }
   }else{ B <- nu }
   m <- length(mu)
   n <- length(nu)
-  if(m>1){ M1 <- t(model.matrix(~0+gl(m,n)))[,] }else{ M1 <- NULL }
-  if(n>1){ M2 <- t(model.matrix(~0+factor(rep(1:n,m))))[,] }else{ M2 <- NULL }
+  if(m > 1L){ M1 <- t(model.matrix(~0+gl(m,n)))[,] }else{ M1 <- NULL }
+  if(n > 1L){ M2 <- t(model.matrix(~0+factor(rep(1:n,m))))[,] }else{ M2 <- NULL }
   M <- rbind(M1,M2)
   if(class(mu)=="bigq"){
     mH0 <- rcdd::makeH(a1=asab(-diag(m*n)), b1=asab(rep(0,m*n)), a2=asab(M), b2=asab(B))
@@ -129,27 +132,30 @@ ejoinings <- function(mu, nu, zeros=FALSE){
   }
   extremals <- rcdd::scdd(mH0)$output[,-c(1,2)]
   if(is.null(dim(extremals))) extremals <- matrix(extremals, nrow=1)
-  extremals <- lapply(1:nrow(extremals), function(i) matrix(extremals[i,], ncol=n, byrow=TRUE) )
+  extremals <-
+    lapply(1:nrow(extremals), function(i) matrix(extremals[i,], ncol=n, byrow=TRUE))
   out <- lapply(extremals,
          function(M){
            rownames(M) <- names(mu)
            colnames(M) <- names(nu)
-           return(M[, sapply(names(mu), function(k) which(names(nu)==k), USE.NAMES=FALSE)])
+           M[, sapply(names(mu), function(k) which(names(nu)==k), USE.NAMES=FALSE)]
          })
   if(!zeros && length(mu0) != length(nu0)){
     if(length(mu0) < length(nu0)){
       out <- lapply(out, function(joining){
-        which.zeros <- sapply(seq_along(mu), function(i) all(joining[i,]==0) || all(joining[i,]=="0"))
+        which.zeros <-
+          sapply(seq_along(mu), function(i) all(joining[i,]==0) || all(joining[i,]=="0"))
         return(joining[!which.zeros,])
       })
     } else {
       out <- lapply(out, function(joining){
-        which.zeros <- sapply(seq_along(nu), function(i) all(joining[,i]==0) || all(joining[,i]=="0"))
+        which.zeros <-
+          sapply(seq_along(nu), function(i) all(joining[,i]==0) || all(joining[,i]=="0"))
         return(joining[,!which.zeros])
       })
     }
   }
-  return(out)
+  out
 }
 
 #' Extremal distances
@@ -158,7 +164,8 @@ ejoinings <- function(mu, nu, zeros=FALSE){
 #'
 #' @param mu (row margins) probability measure in numeric or bigq/character mode
 #' @param nu (column margins) probability measure in numeric or bigq/character mode
-#' @param dist function or matrix, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.
+#' @param dist function or matrix, the distance to be minimized on average.
+#' If \code{NULL}, the 0-1 distance is used.
 #' @param ... arguments passed to \code{dist}
 #'
 #' @return A list with two components: the extreme joinings in a list and the distances in a vector.
@@ -166,6 +173,7 @@ ejoinings <- function(mu, nu, zeros=FALSE){
 #' @note This function, called by \code{\link{kantorovich}}, is rather for internal purpose.
 #'
 #' @import gmp
+#' @importFrom methods is
 #' @export
 edistances <- function(mu, nu, dist=NULL, ...){
   joinings <- ejoinings(mu, nu, zeros=TRUE)
@@ -174,19 +182,23 @@ edistances <- function(mu, nu, dist=NULL, ...){
   use_gmp <- class(mu) %in% c("bigq", "character")
   if(is.null(dist)){
     rho <- function(x, y) discrete(x, y, gmp=use_gmp)
-  } else if(class(dist) == "function") {
+  } else if(is(dist, "function")) {
     rho <- function(x, y) dist(x, y, ...)
-  } else if(class(dist)=="matrix"){
-    if(!use_gmp && mode(dist) != "numeric") stop("The dist matrix must be numeric if mu and nu are numeric")
-    if(nrow(dist) != length(mu) || ncol(dist) != length(nu)) stop("Invalid dimension of the dist matrix")
-    if(is.null(rownames(dist))) rownames(dist) <- 1:nrow(dist)
-    if(is.null(colnames(dist))) colnames(dist) <- 1:ncol(dist)
-    if(!setequal(rownames(j1), rownames(dist)) || !setequal(colnames(j1), colnames(dist))) stop("Invalid dimension names of the dist matrix")
+  } else if(is(dist, "matrix")){
+    if(!use_gmp && mode(dist) != "numeric")
+      stop("The dist matrix must be numeric if mu and nu are numeric")
+    if(nrow(dist) != length(mu) || ncol(dist) != length(nu))
+      stop("Invalid dimension of the dist matrix")
+    if(is.null(rownames(dist))) rownames(dist) <- 1L:nrow(dist)
+    if(is.null(colnames(dist))) colnames(dist) <- 1L:ncol(dist)
+    if(!setequal(rownames(j1), rownames(dist)) ||
+       !setequal(colnames(j1), colnames(dist)))
+      stop("Invalid dimension names of the dist matrix")
   } else {
     if(!use_gmp) stop("dist must be a function or a numeric matrix")
     if(use_gmp) stop("dist must be a function or a numeric/character matrix")
   }
-  if(class(dist) == "matrix") {
+  if(is(dist, "matrix")) {
     Rho <- dist[rownames(j1), colnames(j1)]
   } else {
     if(use_gmp){
@@ -204,8 +216,7 @@ edistances <- function(mu, nu, dist=NULL, ...){
       distances[k] <- sum(Rho * joining)
     }
   }
-  out <- list(joinings=joinings, distances=distances)
-  return(out)
+  list(joinings=joinings, distances=distances)
 }
 
 #' Kantorovich distance
@@ -214,8 +225,10 @@ edistances <- function(mu, nu, dist=NULL, ...){
 #'
 #' @param mu (row margins) probability measure in numeric or bigq/character mode
 #' @param nu (column margins) probability measure in numeric or bigq/character mode
-#' @param dist function or matrix, the distance to be minimized on average; if \code{NULL}, the 0-1 distance is used.
-#' @param details prints the joinings achieving the Kantorovich distance and returns them in the \code{"joinings"} attribute of the output
+#' @param dist function or matrix, the distance to be minimized on average;
+#' if \code{NULL}, the 0-1 distance is used.
+#' @param details prints the joinings achieving the Kantorovich distance and
+#' returns them in the \code{"joinings"} attribute of the output
 #' @param ... arguments passed to \code{dist} (only if it is a function)
 #'
 #' @return The Kantorovich distance between \code{mu} and \code{nu}.
@@ -232,7 +245,9 @@ edistances <- function(mu, nu, dist=NULL, ...){
 #' nu <- c("1/4", "1/4", "1/2")
 #' kantorovich(mu, nu, details=TRUE)
 #'
-#' @details The function firstly computes all the extreme joinings of \code{mu} and \code{nu}, then evaluates the average distance for each of them, and then returns the minimal one.
+#' @details The function firstly computes all the extreme joinings of \code{mu}
+#' and \code{nu}, then evaluates the average distance for each of them, and
+#' then returns the minimal one.
 #'
 #' @export
 kantorovich <- function(mu, nu, dist=NULL, details=FALSE, ...){
@@ -243,9 +258,11 @@ kantorovich <- function(mu, nu, dist=NULL, details=FALSE, ...){
     joinings <- distances$joinings
     njoinings <- length(joinings)
     bestjoinings <- joinings[best]
-    message1 <- sprintf("The Kantorovich distance is achieved for %s joining(s) among the %s extreme joining(s), given in the 'joinings' attribute of the output.\n", length(best), njoinings)
-    cat(message1)
+    message1 <-
+      sprintf("The Kantorovich distance is achieved for %s joining(s) among the %s extreme joining(s), given in the 'joinings' attribute of the output.\n",
+              length(best), njoinings)
+    message(message1)
     attr(kanto, "joinings") <- bestjoinings
   }
-  return(kanto)
+  kanto
 }

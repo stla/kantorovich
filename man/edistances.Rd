@@ -11,7 +11,8 @@ edistances(mu, nu, dist = NULL, ...)
 
 \item{nu}{(column margins) probability measure in numeric or bigq/character mode}
 
-\item{dist}{function or matrix, the distance to be minimized on average. If \code{NULL}, the 0-1 distance is used.}
+\item{dist}{function or matrix, the distance to be minimized on average.
+If \code{NULL}, the 0-1 distance is used.}
 
 \item{...}{arguments passed to \code{dist}}
 }
@@ -24,4 +25,3 @@ Compute the distances at the extreme joinings.
 \note{
 This function, called by \code{\link{kantorovich}}, is rather for internal purpose.
 }
-

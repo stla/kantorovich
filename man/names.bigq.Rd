@@ -15,4 +15,3 @@ the names of \code{x}
 \description{
 Names for bigq vectors
 }
-
