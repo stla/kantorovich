@@ -1,8 +1,8 @@
 Package: kantorovich
 Type: Package
 Title: Kantorovich Distance Between Probability Measures
-Version: 2.0.0.9000
-Date: 2020-02-22
+Version: 2.0.1
+Date: 2020-08-14
 Author: Stéphane Laurent
 Maintainer: Stéphane Laurent <laurent_step@outlook.fr>
 Description: Computes the Kantorovich distance between two probability measures on a finite set. The Kantorovich distance is also known as the Monge-Kantorovich distance or the first Wasserstein distance.
@@ -21,7 +21,7 @@ Imports:
 Depends:
     R (>= 2.5.3)
 SystemRequirements: GMP (https://gmplib.org/)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 Encoding: UTF-8
 VignetteBuilder: knitr
 URL: https://github.com/stla/kantorovich

@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 ^NEWS\.md$
 ^cran-comments\.md$
+^doc$
+^Meta$
