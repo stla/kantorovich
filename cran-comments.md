@@ -1,4 +1,4 @@
-# Release version 2.0.1 (2020-08-14)
+# Release version 2.0.1 (2020-08-25)
 
 ## Release summary
 
