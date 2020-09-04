@@ -6,7 +6,7 @@
 
 You can install:
 
-- not yet, but soon, the latest released version from CRAN with 
+- the latest released version from CRAN with 
 
 ```r
 install.packages("kantorovich")
@@ -15,7 +15,7 @@ install.packages("kantorovich")
 - the latest development version from `github` using the `devtools` package:
 
 ```r
-devtools::install_github('stla/kantorovich', build_vignettes=TRUE)
+devtools::install_github('stla/kantorovich', build_vignettes = TRUE)
 ```
 
 ### To learn more ###
