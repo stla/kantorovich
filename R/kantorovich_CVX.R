@@ -22,9 +22,8 @@
 #' @import CVXR
 #' @importFrom methods is
 #' @export
-#'
 kantorovich_CVX <- function(
-  mu, nu, dist=NULL, solution=FALSE, stop_if_fail=TRUE, solver = "GLPK", ...
+  mu, nu, dist=NULL, solution=FALSE, stop_if_fail=TRUE, solver = "ECOS", ...
 ){
   m <- length(mu)
   n <- length(nu)

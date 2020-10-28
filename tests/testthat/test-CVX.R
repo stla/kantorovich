@@ -15,7 +15,7 @@ test_that("kantorovich_CVX - specified distance", {
   # doit trouver 1/4 et deux solutions
   x <- kantorovich_CVX(mu, nu, dist=dist)
   expect_equal(x, 1/4)
-  x <- kantorovich_CVX(mu, nu, dist=dist, solution = TRUE)
+  x <- kantorovich_CVX(mu, nu, dist=dist, solution = TRUE, solver = "GLPK")
   sols <- list(structure(c(0, 0, 0, 0, 0.25, 0.25, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0),
                          .Dim = c(4L, 4L),
                          .Dimnames = list(c("1", "2", "3", "4"), c("1", "2", "3", "4"))),
@@ -36,7 +36,7 @@ test_that("kantorovich_CVX - nonsymmetric dist", {
     byrow = TRUE, nrow = 3)
   x <- kantorovich_CVX(mu, nu, dist=D)
   expect_equal(x, 13/63)
-  x1 <- kantorovich_CVX(mu, nu, dist=D, solution=TRUE)
+  x1 <- kantorovich_CVX(mu, nu, dist=D, solution=TRUE, solver = "GLPK")
   x2 <- kantorovich(mu, nu, dist=D, details=TRUE)
   expect_true(all.equal(attr(x1, "solution"), attr(x2, "joinings")[[1]], tolerance=1e-15, check.attributes=FALSE))
 })
