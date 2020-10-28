@@ -18,6 +18,7 @@ Imports:
     methods,
     lpSolve,
     Rglpk,
+    slam,
     CVXR
 Depends:
     R (>= 2.5.3)

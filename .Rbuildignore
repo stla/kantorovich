@@ -4,3 +4,4 @@
 ^doc$
 ^Meta$
 ^CRAN-RELEASE$
+^inst/cvxr01\.R$

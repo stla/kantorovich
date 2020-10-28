@@ -1,3 +1,16 @@
+# Release version 3.0.0 (2020-10-28)
+
+## Test environments
+
+* ubuntu 18.04, R 3.6.3
+* online win-builder.r-project.org (devel & release)
+
+## R CMD check results
+
+OK
+___
+
+
 # Release version 2.0.1 (2020-08-25)
 
 ## Release summary
@@ -22,6 +35,7 @@ New submission
 
 ___
 
+
 # Release version 2.0.0 (2016-05-25)
 
 ## Release summary
@@ -38,6 +52,7 @@ Nothing particular.
 Ok.
 
 ___
+
 
 # Release version 1.1.0 (2016-02-04)
 
@@ -65,8 +80,8 @@ Old maintainer(s):
 ## CRAN Package Check Results for the previous version
 
 There is an error reported on https://cran.rstudio.com/web/checks/check_results_kantorovich.html for the r-patched-solaris-sparc flavor, related to one test. I do not know how to deal with it. 
-
 ___
+
 
 # Release version 1.0.0 (2016-01-15)
 
