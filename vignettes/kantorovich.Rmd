@@ -161,11 +161,13 @@ names(nu) <- c("a", "b", "c")
 
 # Other solvers 
 
-The `kantorovich` package provides two other functions to compute the Kantorovich distance:
+The `kantorovich` package provides three other functions to compute the Kantorovich distance:
 
 - `kantorovich_lp`, which uses the [lp_solve](http://web.mit.edu/lpsolve/doc/) solver with the help of the `lpSolve` package;
 
 - `kantorovich_glpk`, which uses the [GLPK](http://www.gnu.org/software/glpk/) solver with the help of the `Rglpk` package. 
+
+- `kantorovich_CVX`, which uses the [ECOS](https://web.stanford.edu/~boyd/papers/ecos.html) solver with the help of the `CVXR` package. 
 
 Contrary to the `kantorovich` function, these two functions do not take care of the names of the two vectors `mu` and `nu` representing the two probability measures $\mu$ and $\nu$, and the distance to be minimized on average must be given as a matrix only, not a function. 
 
@@ -183,14 +185,17 @@ M <- matrix(
   byrow = TRUE, nrow = 3)
 kanto_lp <- kantorovich_lp(mu, nu, dist=M)
 kanto_glpk <- kantorovich_glpk(mu, nu, dist=M)
+kanto_CVX <- kantorovich_CVX(mu, nu, dist=M)
 ```
 
-Then `kantorovich_lp` does not return the better decimal approximation of $13/63$:
+Then `kantorovich_lp` and `kantorovich_CVX` do not return the better decimal approximation of $13/63$:
 
 ```{r, collapse=TRUE}
 print(kanto_lp, digits=22)
 print(kanto_glpk, digits=22)
+print(kanto_CVX, digits=22)
 print(13/63, digits=22)
 ```
 
-
+But `kantorovich_CVX` is the fastest one, and it handles the case when the 
+marginal probability measures `mu` and `nu` have a large support.

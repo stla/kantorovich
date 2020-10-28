@@ -19,11 +19,11 @@
 #' kantorovich_glpk(mu, nu)
 #'
 #' @import Rglpk
+#' @importFrom slam as.simple_triplet_matrix
 #' @importFrom methods is
 #' @export
 #'
 kantorovich_glpk <- function(mu, nu, dist=NULL, solution=FALSE, stop_if_fail=TRUE, ...){
-  # à faire : sortir les solutions
   m <- length(mu)
   n <- length(nu)
   # checks
@@ -42,9 +42,9 @@ kantorovich_glpk <- function(mu, nu, dist=NULL, solution=FALSE, stop_if_fail=TRU
   kanto <-
     Rglpk_solve_LP(
       obj = c(t(dist)),
-      mat = rbind(-diag(m*n),
+      mat = as.simple_triplet_matrix(rbind(-diag(m*n),
                   rbind(t(model.matrix(~0+gl(m,n)))[,],
-                        t(model.matrix(~0+factor(rep(1:n,m))))[,])),
+                        t(model.matrix(~0+factor(rep(1:n,m))))[,]))),
       dir = c(rep("<=", m*n), rep("==", m+n)),
       rhs = c(rep(0,m*n), c(mu, nu)), ...)
   # status

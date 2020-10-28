@@ -10,6 +10,7 @@ kantorovich_CVX(
   dist = NULL,
   solution = FALSE,
   stop_if_fail = TRUE,
+  solver = "ECOS",
   ...
 )
 }
@@ -28,7 +29,9 @@ if \code{NULL}, the 0-1 distance is used.}
 case when no solution is found; if \code{FALSE}, the output of
 \code{\link[CVXR]{psolve}} is returned with a warning}
 
-\item{...}{arguments passed to \code{\link[CVXR]{psolve}}}
+\item{solver}{the \code{CVX} solver, passed to \code{\link[CVXR]{psolve}}}
+
+\item{...}{other arguments passed to \code{\link[CVXR]{psolve}}}
 }
 \description{
 Kantorovich distance using the \code{CVXR} package
