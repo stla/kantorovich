@@ -1,6 +1,6 @@
-#' Computes Kantorovich distance with GLPK
+#' Computes Kantorovich distance with CVX
 #'
-#' Kantorovich distance using the \code{Rglpk} package
+#' Kantorovich distance using the \code{CVXR} package
 #'
 #' @param mu (row margins) probability measure in numeric mode
 #' @param nu (column margins) probability measure in numeric mode
@@ -10,20 +10,22 @@
 #' \code{"solution"} attributes of the output
 #' @param stop_if_fail logical; if \code{TRUE}, an error is returned in the
 #' case when no solution is found; if \code{FALSE}, the output of
-#' \code{\link[Rglpk]{Rglpk_solve_LP}} is returned with a warning
-#' @param ... arguments passed to \code{\link[Rglpk]{Rglpk_solve_LP}}
+#' \code{\link[CVXR]{psolve}} is returned with a warning
+#' @param solver the \code{CVX} solver, passed to \code{\link[CVXR]{psolve}}
+#' @param ... other arguments passed to \code{\link[CVXR]{psolve}}
 #'
 #' @examples
 #' mu <- c(1/7,2/7,4/7)
 #' nu <- c(1/4,1/4,1/2)
-#' kantorovich_glpk(mu, nu)
+#' kantorovich_CVX(mu, nu)
 #'
-#' @import Rglpk
+#' @import CVXR
 #' @importFrom methods is
 #' @export
 #'
-kantorovich_glpk <- function(mu, nu, dist=NULL, solution=FALSE, stop_if_fail=TRUE, ...){
-  # à faire : sortir les solutions
+kantorovich_CVX <- function(
+  mu, nu, dist=NULL, solution=FALSE, stop_if_fail=TRUE, solver = "ECOS", ...
+){
   m <- length(mu)
   n <- length(nu)
   # checks
@@ -39,16 +41,18 @@ kantorovich_glpk <- function(mu, nu, dist=NULL, solution=FALSE, stop_if_fail=TRU
   }
   #
   if(is.null(dist)) dist <- 1-diag(m)
-  kanto <-
-    Rglpk_solve_LP(
-      obj = c(t(dist)),
-      mat = rbind(-diag(m*n),
-                  rbind(t(model.matrix(~0+gl(m,n)))[,],
-                        t(model.matrix(~0+factor(rep(1:n,m))))[,])),
-      dir = c(rep("<=", m*n), rep("==", m+n)),
-      rhs = c(rep(0,m*n), c(mu, nu)), ...)
+
+  obj <- c(t(dist))
+  A <- rbind(t(model.matrix(~0+gl(m,n)))[,],
+             t(model.matrix(~0+factor(rep(1:n,m))))[,])
+  x <- Variable(m*n)
+  objective   <- Minimize(t(obj) %*% x)
+  constraints <- list(x >= 0, A%*%x == c(mu,nu))
+  problem     <- Problem(objective, constraints)
+
+  kanto <- psolve(problem, solver = solver, ...)
   # status
-  if(kanto$status != 0){
+  if(kanto$status != "optimal"){
     if(stop_if_fail){
       stop(sprintf("No optimal solution found: status %s \n", kanto$status))
     }else{
@@ -57,7 +61,8 @@ kantorovich_glpk <- function(mu, nu, dist=NULL, solution=FALSE, stop_if_fail=TRU
     }
   }
   # output
-  out <- kanto$optimum
-  if(solution) attr(out, "solution") <- matrix(kanto$solution, nrow=m, byrow=TRUE)
+  out <- kanto$value
+  if(solution) attr(out, "solution") <-
+    matrix(kanto$getValue(x), nrow=m, byrow=TRUE)
   out
 }

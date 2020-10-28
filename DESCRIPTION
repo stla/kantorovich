@@ -17,7 +17,8 @@ Imports:
     gmp,
     methods,
     lpSolve,
-    Rglpk
+    Rglpk,
+    CVXR
 Depends:
     R (>= 2.5.3)
 SystemRequirements: GMP (https://gmplib.org/)
