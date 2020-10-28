@@ -24,7 +24,7 @@
 #' @export
 #'
 kantorovich_CVX <- function(
-  mu, nu, dist=NULL, solution=FALSE, stop_if_fail=TRUE, solver = "ECOS", ...
+  mu, nu, dist=NULL, solution=FALSE, stop_if_fail=TRUE, solver = "GLPK", ...
 ){
   m <- length(mu)
   n <- length(nu)
