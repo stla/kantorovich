@@ -1,6 +1,11 @@
-# kantorovich 2.0.0
+# kantorovich 3.0.1
 
-* New function `kantorovich_CVX`; it beats `kantorovich_glpk` and `kantorovich_lp`
+* Changes required for the new version of 'gmp'.
+
+
+# kantorovich 3.0.0
+
+* New function `kantorovich_CVX`; it beats `kantorovich_glpk` and `kantorovich_lp`.
 
 
 # kantorovich 2.0.1
@@ -10,12 +15,12 @@
 
 # kantorovich 2.0.0
 
-* New functions `kantorovich_glpk` and `kantorovich_lp`
+* New functions `kantorovich_glpk` and `kantorovich_lp`.
 
 
 # kantorovich 1.1.1
 
-* import 'gmp' in NAMESPACE
+* Import 'gmp' in NAMESPACE.
 
 
 # kantorovich 1.1.0

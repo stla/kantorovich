@@ -84,7 +84,7 @@ test_that("Non-square example - with zeros", {
   nu <- as.bigq(nu)
   joinings <- ejoinings(mu, nu, zeros=TRUE)
   expect_true(length(joinings)==12)
-  expect_true(all(sapply(lapply(joinings, function(x) apply.bigq(t(as.matrix(as.bigq(x))), 2, sum)), function(x) all.equal(x, nu, check.names=FALSE))))
+  expect_true(all(sapply(lapply(joinings, function(x) apply.bigq(as.matrix(as.bigq(x)), 2, sum)), function(x) all.equal(x, nu, check.names=FALSE))))
   expect_true(all(sapply(lapply(joinings, function(x) apply.bigq(as.matrix(as.bigq(x)), 1, sum)), function(x) all.equal(x, c(mu,0,0), check.names=FALSE))))
   #
   mu <- setNames(as.bigq(c(1,2,4), 7), c("a", "b", "c"))
@@ -107,7 +107,7 @@ test_that("Non-square example - without zeros", {
   nu <- as.bigq(nu)
   joinings <- ejoinings(mu, nu)
   expect_true(length(joinings)==12)
-  expect_true(all(sapply(lapply(joinings, function(x) apply.bigq(t(as.matrix(as.bigq(x))), 2, sum)), function(x) all.equal(x, nu, check.names=FALSE))))
+  expect_true(all(sapply(lapply(joinings, function(x) apply.bigq(as.matrix(as.bigq(x)), 2, sum)), function(x) all.equal(x, nu, check.names=FALSE))))
   expect_true(all(sapply(lapply(joinings, function(x) apply.bigq(as.matrix(as.bigq(x)), 1, sum)), function(x) all.equal(x, mu, check.names=FALSE))))
   #
   mu <- setNames(as.bigq(c(1,2,4), 7), c("a", "b", "c"))
