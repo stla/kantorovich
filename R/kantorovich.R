@@ -59,7 +59,7 @@ arrange_names <- function(mu, nu){
   } else if(length(mu) < length(nu)){
     if(all(names(mu) %in% names(nu))){
       message("Caution: some names of mu and/or nu were missing or not compatible - automatic change")
-      if(class(mu)=="bigq"){
+      if(inherits(mu, "bigq")){
         mu_ch <- setNames(as.character(mu), names(mu))
         mu_ch[setdiff(names(nu), names(mu))] <- "0"
         mu <- setNames(gmp::as.bigq(mu_ch), names(mu_ch))
@@ -113,7 +113,7 @@ ejoinings <- function(mu, nu, zeros=FALSE){
   mu <- munu$mu; nu <- munu$nu
   if(class(mu) != class(nu))
     stop("Enter mu and nu in numeric or (preferably) in rational with the gmp package.")
-  if(class(mu) != "bigq")
+  if(!inherits(mu, "bigq"))
     message("Message: You should enter mu and nu in rational with the gmp package.")
   if(length(mu) > 1L){
     if(length(nu) > 1L){
@@ -125,7 +125,7 @@ ejoinings <- function(mu, nu, zeros=FALSE){
   if(m > 1L){ M1 <- t(model.matrix(~0+gl(m,n)))[,] }else{ M1 <- NULL }
   if(n > 1L){ M2 <- t(model.matrix(~0+factor(rep(1:n,m))))[,] }else{ M2 <- NULL }
   M <- rbind(M1,M2)
-  if(class(mu)=="bigq"){
+  if(inherits(mu, "bigq")){
     mH0 <- rcdd::makeH(a1=asab(-diag(m*n)), b1=asab(rep(0,m*n)), a2=asab(M), b2=asab(B))
   }else{
     mH0 <- rcdd::makeH(a1=-diag(m*n), b1=rep(0,m*n), a2=M, b2=B)
