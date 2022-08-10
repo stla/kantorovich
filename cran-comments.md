@@ -1,3 +1,16 @@
+# Release version 3.0.1 (2022-08-10)
+
+## Test environments
+
+* Linux Mint, R 4.2.1
+* winbuilder devel
+
+## R CMD check results
+
+OK
+___
+
+
 # Release version 3.0.0 (2020-10-28)
 
 ## Test environments
