@@ -26,7 +26,7 @@ If you encounter a bug, or if you have a suggestion to improve the package, plea
 \tabular{ll}{
 Package: \tab kantorovich\cr
 Type: \tab Package\cr
-Version: \tab 3.0.2\cr
+Version: \tab 3.1.0\cr
 Date: \tab 2023-08-22\cr
 License: \tab GPL-3\cr
 }
