@@ -23,6 +23,7 @@
 #' @importFrom ompr.roi with_ROI
 #' @import ROI.plugin.glpk
 #' @importFrom methods is
+#' @importFrom utils capture.output
 #' @export
 kantorovich_ompr <- function(
     mu, nu, dist = NULL, solution = FALSE, stop_if_fail = TRUE
@@ -56,10 +57,11 @@ kantorovich_ompr <- function(
   optimization <- model |>
     solve_model(with_ROI(solver = "glpk"))
 
-  message(capture.output(optimization$model, type = "message"))
+  msg <- capture.output(optimization$model)
+  message(paste0(msg, collapse = "\n"))
 
   status <- solver_status(optimization)
-  if(status != "success" || status != "optimal") {
+  if(status != "success" && status != "optimal") {
     if(stop_if_fail) {
       stop(
         sprintf("No optimal solution found: status %s. \n", dQuote(status))

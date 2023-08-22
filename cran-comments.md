@@ -1,3 +1,16 @@
+# Release version 3.0.2 (2023-08-22)
+
+## Test environments
+
+* Windows 10, R 4.3.1
+* winbuilder devel
+
+## R CMD check results
+
+OK
+___
+
+
 # Release version 3.0.1 (2022-08-10)
 
 ## Test environments

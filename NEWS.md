@@ -1,6 +1,7 @@
 # kantorovich 3.1.0
 
-* New solving method using the 'ompr' package.
+* New solving method using the 'ompr' package. This method is slower but 
+its implementation has a very nice syntax.
 
 
 # kantorovich 3.0.1

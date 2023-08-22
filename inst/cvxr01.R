@@ -46,12 +46,14 @@ nu <- rpois(m, 20)
 nu <- nu/sum(nu)
 
 kantorovich_CVX(mu, nu)
+kantorovich_ompr(mu, nu)
 
 microbenchmark(
   Rglpk = kantorovich_glpk(mu, nu),
   lpSolve = kantorovich_lp(mu, nu),
+  ompr = kantorovich_ompr(mu, nu),
   CVXR = kantorovich_CVX(mu, nu),
   CVXR_GLPK = kantorovich_CVX(mu, nu, ignore_dcp = TRUE),
   CVXR_ECOS = kantorovich_CVX(mu, nu, solver = "ECOS_BB"),
-  times = 10
+  times = 5
 )

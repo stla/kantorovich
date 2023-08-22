@@ -1,4 +1,5 @@
 library(testthat)
 library(kantorovich)
+library(gmp)
 
-test_check("kantorovich")
+test_check("kantorovich", reporter = SilentReporter())
