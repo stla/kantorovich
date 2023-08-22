@@ -6,3 +6,4 @@
 ^CRAN-RELEASE$
 ^inst/cvxr01\.R$
 ^CRAN-SUBMISSION$
+^\.github$

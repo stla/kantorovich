@@ -1,5 +1,9 @@
 ## `kantorovich` package for R
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/stla/kantorovich/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stla/kantorovich/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 **Kantorovich distance between finite probability measures**
 
 ### Install ###
