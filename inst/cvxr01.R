@@ -53,5 +53,5 @@ microbenchmark(
   CVXR = kantorovich_CVX(mu, nu),
   CVXR_GLPK = kantorovich_CVX(mu, nu, ignore_dcp = TRUE),
   CVXR_ECOS = kantorovich_CVX(mu, nu, solver = "ECOS_BB"),
-  times = 3
+  times = 10
 )
