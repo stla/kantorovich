@@ -1,3 +1,7 @@
+if(getRversion() >= "2.15.1") {
+  utils::globalVariables(c("i", "j", "p"))
+}
+
 #' Computes Kantorovich distance with 'ompr'
 #'
 #' Kantorovich distance using the \code{ompr} package
