@@ -8,8 +8,7 @@ if(getRversion() >= "2.15.1") {
 #'
 #' @param mu (row margins) probability measure in numeric mode
 #' @param nu (column margins) probability measure in numeric mode
-#' @param dist matrix, the distance to be minimized on average;
-#' if \code{NULL}, the 0-1 distance is used.
+#' @param dist matrix defining the distance to be minimized on average
 #' @param solution logical; if \code{TRUE} the solution is returned in the
 #' \code{"solution"} attributes of the output
 #' @param stop_if_fail logical; if \code{TRUE}, an error is returned in the
@@ -19,9 +18,12 @@ if(getRversion() >= "2.15.1") {
 #' @note The \code{glpk} solver is the one used to solve the problem.
 #'
 #' @examples
-#' mu <- c(1/7,2/7,4/7)
-#' nu <- c(1/4,1/4,1/2)
-#' kantorovich_ompr(mu, nu)
+#' x <- c(1.5, 2, -3)
+#' mu <- c(1/7, 2/7, 4/7)
+#' y <- c(-4, 3.5, 0)
+#' nu <- c(1/4, 1/4, 1/2)
+#' M <- outer(x, y, FUN = function(x, y) abs(x - y))
+#' kantorovich_ompr(mu, nu, dist = M)
 #'
 #' @import ompr
 #' @importFrom ompr.roi with_ROI
@@ -30,32 +32,29 @@ if(getRversion() >= "2.15.1") {
 #' @importFrom utils capture.output
 #' @export
 kantorovich_ompr <- function(
-    mu, nu, dist = NULL, solution = FALSE, stop_if_fail = TRUE
+    mu, nu, dist, solution = FALSE, stop_if_fail = TRUE
 ){
   m <- length(mu)
   n <- length(nu)
   # checks
-  if(m != n) stop("`mu` and `nu` do not have the same length.")
-  if(!is.null(dist)) {
-    if(!is(dist, "matrix") || mode(dist) != "numeric")
-      stop("`dist` must be a numeric matrix.")
-    if(nrow(dist) != m || ncol(dist) != m)
-      stop("invalid dimensions of the `dist` matrix.")
-  }
+  if(!is(dist, "matrix") || mode(dist) != "numeric")
+    stop("`dist` must be a numeric matrix.")
+  if(nrow(dist) != m || ncol(dist) != n)
+    stop("invalid dimensions of the `dist` matrix.")
   if(sum(mu) != 1 || sum(nu) != 1 || any(mu<0) || any(nu<0)) {
     message("Warning: `mu` and/or `nu` are not probability measures.")
   }
   #
-  if(is.null(dist)) dist <- 1 - diag(m)
+  #if(is.null(dist)) dist <- 1 - diag(m)
 
   #
   model <- MIPModel() |>
-    add_variable(p[i, j], i = 1L:n, j = 1L:n, type = "continuous") |>
-    add_constraint(p[i, j] >= 0, i = 1L:n, j = 1L:n) |>
-    add_constraint(sum_over(p[i, j], j = 1L:n) == mu[i], i = 1L:n) |>
-    add_constraint(sum_over(p[i, j], i = 1L:n) == nu[j], j = 1L:n) |>
+    add_variable(p[i, j], i = 1L:m, j = 1L:n, type = "continuous") |>
+    add_constraint(p[i, j] >= 0, i = 1L:m, j = 1L:n) |>
+    add_constraint(sum_over(p[i, j], j = 1L:n) == mu[i], i = 1L:m) |>
+    add_constraint(sum_over(p[i, j], i = 1L:m) == nu[j], j = 1L:n) |>
     set_objective(
-      sum_over(p[i, j] * dist[i, j], i = 1L:n, j = 1L:n, i != j), "min"
+      sum_over(p[i, j] * dist[i, j], i = 1L:m, j = 1L:n, i != j), "min"
     )
 
   optimization <- model |>

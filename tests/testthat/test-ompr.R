@@ -3,7 +3,7 @@ context("ompr")
 test_that("kantorovich_ompr default distance", {
   mu <- c(1/7,2/7,4/7)
   nu <- c(1/4,1/4,1/2)
-  suppressMessages(x <- kantorovich_ompr(mu, nu))
+  suppressMessages(x <- kantorovich_ompr(mu, nu, dist = 1 - diag(3L)))
   expect_equal(x, 0.107142857142857)
 })
 

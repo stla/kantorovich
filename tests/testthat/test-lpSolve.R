@@ -3,9 +3,9 @@ context("lpSolve")
 test_that("kantorovich_lp default distance", {
   mu <- c(1/7,2/7,4/7)
   nu <- c(1/4,1/4,1/2)
-  x <- kantorovich_lp(mu, nu)
+  x <- kantorovich_lp(mu, nu, dist = 1 - diag(3L))
   expect_equal(x, 0.107142857142857)
-  x <- kantorovich_lp(mu, nu, lp.object = TRUE)
+  x <- kantorovich_lp(mu, nu, dist = 1 - diag(3L), lp.object = TRUE)
   expect_true(class(x)=="lp")
 })
 

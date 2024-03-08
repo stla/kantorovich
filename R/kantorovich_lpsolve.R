@@ -4,8 +4,7 @@
 #'
 #' @param mu (row margins) probability measure in numeric mode
 #' @param nu (column margins) probability measure in numeric mode
-#' @param dist matrix, the distance to be minimized on average;
-#' if \code{NULL}, the 0-1 distance is used.
+#' @param dist matrix defining the distance to be minimized on average
 #' @param lp.object logical, if \code{FALSE}, the output is the Kantorovich
 #' distance; if \code{TRUE}, the output is a \code{\link[lpSolve]{lp.object}}
 #' @param solution logical, to use only if \code{lp.object=FALSE};
@@ -14,30 +13,29 @@
 #' @param ... arguments passed to \code{\link[lpSolve]{lp}}
 #'
 #' @examples
-#' mu <- c(1/7,2/7,4/7)
-#' nu <- c(1/4,1/4,1/2)
-#' kantorovich_lp(mu, nu)
+#' x <- c(1.5, 2, -3)
+#' mu <- c(1/7, 2/7, 4/7)
+#' y <- c(4, 3.5, 0, -2)
+#' nu <- c(1/4, 1/4, 1/4, 1/4)
+#' M <- outer(x, y, FUN = function(x, y) abs(x - y))
+#' kantorovich_lp(mu, nu, dist = M)
 #'
 #' @import lpSolve
 #' @importFrom methods is
 #' @export
 #'
-kantorovich_lp <- function(mu, nu, dist=NULL, solution=FALSE, lp.object=FALSE, ...){
+kantorovich_lp <- function(mu, nu, dist, solution=FALSE, lp.object=FALSE, ...){
   m <- length(mu)
   n <- length(nu)
   # checks
-  if(m != n) stop("mu and nu do not have the same length")
-  if(!is.null(dist)){
-    if(!is(dist, "matrix") || mode(dist) != "numeric")
-      stop("dist must be a numeric matrix")
-    if(nrow(dist)!=m || ncol(dist)!=m)
-      stop("invalid dimensions of the dist matrix")
-  }
+  if(!is(dist, "matrix") || mode(dist) != "numeric")
+    stop("dist must be a numeric matrix")
+  if(nrow(dist)!=m || ncol(dist)!=n)
+    stop("invalid dimensions of the dist matrix")
   if(sum(mu)!=1 || sum(nu)!=1 || any(mu<0) || any(nu<0)){
     message("Warning: mu and/or nu are not probability measures")
   }
   #
-  if(is.null(dist)) dist <- 1-diag(m)
   kanto <-
     lpSolve::lp(
       direction = "min",

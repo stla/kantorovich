@@ -7,7 +7,7 @@
 kantorovich_CVX(
   mu,
   nu,
-  dist = NULL,
+  dist,
   solution = FALSE,
   stop_if_fail = TRUE,
   solver = "ECOS",
@@ -19,8 +19,7 @@ kantorovich_CVX(
 
 \item{nu}{(column margins) probability measure in numeric mode}
 
-\item{dist}{matrix, the distance to be minimized on average;
-if \code{NULL}, the 0-1 distance is used.}
+\item{dist}{matrix defining the distance to be minimized on average}
 
 \item{solution}{logical; if \code{TRUE} the solution is returned in the
 \code{"solution"} attributes of the output}
@@ -37,8 +36,11 @@ case when no solution is found; if \code{FALSE}, the output of
 Kantorovich distance using the \code{CVXR} package
 }
 \examples{
-mu <- c(1/7,2/7,4/7)
-nu <- c(1/4,1/4,1/2)
-kantorovich_CVX(mu, nu)
+x <- c(1.5, 2, -3)
+mu <- c(1/7, 2/7, 4/7)
+y <- c(4, 3.5, 0, -2)
+nu <- c(1/4, 1/4, 1/4, 1/4)
+M <- outer(x, y, FUN = function(x, y) abs(x - y))
+kantorovich_CVX(mu, nu, dist = M)
 
 }

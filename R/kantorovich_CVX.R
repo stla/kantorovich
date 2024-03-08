@@ -4,8 +4,7 @@
 #'
 #' @param mu (row margins) probability measure in numeric mode
 #' @param nu (column margins) probability measure in numeric mode
-#' @param dist matrix, the distance to be minimized on average;
-#' if \code{NULL}, the 0-1 distance is used.
+#' @param dist matrix defining the distance to be minimized on average
 #' @param solution logical; if \code{TRUE} the solution is returned in the
 #' \code{"solution"} attributes of the output
 #' @param stop_if_fail logical; if \code{TRUE}, an error is returned in the
@@ -15,31 +14,29 @@
 #' @param ... other arguments passed to \code{\link[CVXR]{psolve}}
 #'
 #' @examples
-#' mu <- c(1/7,2/7,4/7)
-#' nu <- c(1/4,1/4,1/2)
-#' kantorovich_CVX(mu, nu)
+#' x <- c(1.5, 2, -3)
+#' mu <- c(1/7, 2/7, 4/7)
+#' y <- c(4, 3.5, 0, -2)
+#' nu <- c(1/4, 1/4, 1/4, 1/4)
+#' M <- outer(x, y, FUN = function(x, y) abs(x - y))
+#' kantorovich_CVX(mu, nu, dist = M)
 #'
 #' @import CVXR
 #' @importFrom methods is
 #' @export
 kantorovich_CVX <- function(
-  mu, nu, dist=NULL, solution=FALSE, stop_if_fail=TRUE, solver = "ECOS", ...
+    mu, nu, dist, solution=FALSE, stop_if_fail=TRUE, solver = "ECOS", ...
 ){
   m <- length(mu)
   n <- length(nu)
   # checks
-  if(m != n) stop("mu and nu do not have the same length")
-  if(!is.null(dist)){
-    if(!is(dist, "matrix") || mode(dist) != "numeric")
-      stop("dist must be a numeric matrix")
-    if(nrow(dist)!=m || ncol(dist)!=m)
-      stop("invalid dimensions of the dist matrix")
-  }
+  if(!is(dist, "matrix") || mode(dist) != "numeric")
+    stop("dist must be a numeric matrix")
+  if(nrow(dist)!=m || ncol(dist)!=n)
+    stop("invalid dimensions of the dist matrix")
   if(sum(mu)!=1 || sum(nu)!=1 || any(mu<0) || any(nu<0)){
     message("Warning: mu and/or nu are not probability measures")
   }
-  #
-  if(is.null(dist)) dist <- 1-diag(m)
 
   obj <- c(t(dist))
   A <- rbind(t(model.matrix(~0+gl(m,n)))[,],

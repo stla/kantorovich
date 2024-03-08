@@ -4,15 +4,14 @@
 \alias{kantorovich_ompr}
 \title{Computes Kantorovich distance with 'ompr'}
 \usage{
-kantorovich_ompr(mu, nu, dist = NULL, solution = FALSE, stop_if_fail = TRUE)
+kantorovich_ompr(mu, nu, dist, solution = FALSE, stop_if_fail = TRUE)
 }
 \arguments{
 \item{mu}{(row margins) probability measure in numeric mode}
 
 \item{nu}{(column margins) probability measure in numeric mode}
 
-\item{dist}{matrix, the distance to be minimized on average;
-if \code{NULL}, the 0-1 distance is used.}
+\item{dist}{matrix defining the distance to be minimized on average}
 
 \item{solution}{logical; if \code{TRUE} the solution is returned in the
 \code{"solution"} attributes of the output}
@@ -28,8 +27,11 @@ Kantorovich distance using the \code{ompr} package
 The \code{glpk} solver is the one used to solve the problem.
 }
 \examples{
-mu <- c(1/7,2/7,4/7)
-nu <- c(1/4,1/4,1/2)
-kantorovich_ompr(mu, nu)
+x <- c(1.5, 2, -3)
+mu <- c(1/7, 2/7, 4/7)
+y <- c(-4, 3.5, 0)
+nu <- c(1/4, 1/4, 1/2)
+M <- outer(x, y, FUN = function(x, y) abs(x - y))
+kantorovich_ompr(mu, nu, dist = M)
 
 }
