@@ -1,3 +1,10 @@
+# kantorovich 3.2.0
+
+* The previous version didn't allow to compute the Kantorovich distance 
+between probability measures with different lengths; this was a stupid 
+restriction.
+
+
 # kantorovich 3.1.0
 
 * New solving method using the 'ompr' package. This method is slower but 
