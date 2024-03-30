@@ -1,3 +1,17 @@
+# Release version 3.2.0 (2024-04-01)
+
+## Test environments
+
+* Windows 10, R 4.3.2
+* winbuilder devel
+* Github actions
+
+## R CMD check results
+
+OK
+___
+
+
 # Release version 3.0.2 (2023-08-22)
 
 ## Test environments
