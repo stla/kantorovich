@@ -1,4 +1,4 @@
-# Release version 3.2.0 (2024-04-01)
+# Release version 3.2.0 (2024-04-23)
 
 ## Test environments
 
